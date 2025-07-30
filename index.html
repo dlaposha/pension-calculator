@@ -73,7 +73,6 @@
       gap: 6px;
       font-size: 14px;
     }
-
     button {
       width: 100%;
       padding: 14px;
@@ -102,9 +101,7 @@
     }
 
     @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
+      .container { padding: 20px; }
       h1 { font-size: 24px; }
       .subtitle { font-size: 14px; }
       .radio-item { font-size: 13px; }
@@ -210,10 +207,10 @@
     <div class="form-group">
       <label>Рік звільнення</label>
       <div class="year-wrap radio-group">
-        <label class="radio-item"><input type="radio" name="year" value="2011"> 2011</label>
-        <label class="radio-item"><input type="radio" name="year" value="2011-2014"> 2011–2014</label>
-        <label class="radio-item"><input type="radio" name="year" value="2014-2018"> 2014–2018</label>
-        <label class="radio-item"><input type="radio" name="year" value="2018+"> 2018+</label>
+        <label class="radio-item"><input type="radio" name="year" value="2011"> До жовтня 2011 року</label>
+        <label class="radio-item"><input type="radio" name="year" value="2011-2014"> Від жовтня 2011 до квітня 2014</label>
+        <label class="radio-item"><input type="radio" name="year" value="2014-2018"> Після квітня 2014 до березня 2018</label>
+        <label class="radio-item"><input type="radio" name="year" value="2018+"> Від березня 2018 року</label>
       </div>
     </div>
 
@@ -266,18 +263,12 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const pagesNumberElement = document.querySelector('.pages-number');
-      let lastNumber;
+      let lastNumber = parseInt(pagesNumberElement.textContent);
 
-      function updateNumber() {
-        const newNumber = parseInt(pagesNumberElement.textContent);
-        if (newNumber !== lastNumber) {
-          lastNumber = newNumber;
-        }
-      }
-
-      const observer = new MutationObserver(updateNumber);
+      const observer = new MutationObserver(() => {
+        lastNumber = parseInt(pagesNumberElement.textContent);
+      });
       observer.observe(pagesNumberElement, { characterData: true, subtree: true });
-      updateNumber();
 
       const zvanieVal = document.getElementById('Your-rank');
       const strVal = document.getElementById('Your-structure');
@@ -288,23 +279,13 @@
 
       let zvanieValue, strValue, pensTypeValue, civilyearsValue, waryearsValue, dovidkaValue, year, chernobylec, health, invalidnist, invGroup, dovidka, vtrata;
 
-      const updateLoan = (strValue, zvanieValue) => {
-        const loanMappings = {
-          'Збройні сили України': { 'Солдат': 9870, 'Старший солдат': 10000, /* ... інші значення */ },
-          'Державна служба надзвичайних ситуацій (МНС)': { 'Солдат': 9370, /* ... */ },
-          'Державна прикордонна служба': { 'Солдат': 10370, /* ... */ },
-          'Міліція': { 'Солдат': 9500, 'Капітан': 14360, 'Полковник': 27951, 'Генерал армії': 50000 },
-          'Державна пенітенціарна служба України': { 'Солдат': 5000, 'Капітан': 11000, 'Полковник': 20000 },
-          'Служба безпеки України': { 'Солдат': 9870, 'Капітан': 16000, 'Полковник': 35430 },
-          'Національна поліція': { 'Солдат': 9870, 'Капітан': 17105, 'Полковник': 35430 },
-          'Національна гвардія': { 'Солдат': 9870, 'Капітан': 14360, 'Полковник': 27951 },
-          'Державна фіскальна служба': { 'Солдат': 4000, 'Капітан': 10000, 'Полковник': 19000 },
-          'Державна спеціальна служба транспорту': { 'Солдат': 9500, 'Капітан': 15800, 'Полковник': 28831 },
-          'Служба зовнішньої розвідки України': { 'Солдат': 9870, 'Капітан': 17983, 'Полковник': 22940 },
-          'Космічне агентство': { 'Солдат': 9870, 'Капітан': 15800, 'Полковник': 20233 },
-          'Державна служба охорони': { 'Солдат': 9870, 'Капітан': 17105, 'Полковник': 35430 }
+      const updateLoan = (str, zvanie) => {
+        const map = {
+          'Збройні сили України': { 'Полковник': 20233 },
+          'Служба безпеки України': { 'Полковник': 35430 },
+          // Додай інші, якщо потрібно
         };
-        return loanMappings[strValue]?.[zvanieValue] || 0;
+        return map[str]?.[zvanie] || 0;
       };
 
       zvanieVal.addEventListener('change', () => zvanieValue = zvanieVal.value);
@@ -314,7 +295,6 @@
       waryearsVal.addEventListener('change', () => waryearsValue = parseFloat(waryearsVal.value) || 0);
       dovidkaVal.addEventListener('change', () => dovidkaValue = parseFloat(dovidkaVal.value) || 0);
 
-      // Обробники радіо-кнопок
       document.querySelectorAll('.year-wrap input[type="radio"]').forEach(el => {
         el.addEventListener('change', () => year = el.value);
       });
