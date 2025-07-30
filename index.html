@@ -116,6 +116,19 @@
       font-size: 14px;
       margin-top: 10px;
     }
+    .consultation-message {
+      font-size: 1em;
+      color: #2c3e50;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .consultation-message a {
+      color: #27ae60;
+      text-decoration: underline;
+    }
+    .consultation-message a:hover {
+      color: #219653;
+    }
     @media (max-width: 600px) {
       .container { padding: 20px; }
       h1 { font-size: 24px; }
@@ -296,6 +309,12 @@
           <div class="field-label result price">— грн</div>
         </div>
         <p class="note">Дана сума не враховує виплати на неповнолітніх дітей, гірські, за УБД та інших надбавок. Тому Ваша пенсія може бути ще більше.</p>
+        <p class="consultation-message" id="sufficient-pension" style="display: none;">
+          Ваша виплата пенсії, враховуючи надану інформацію, здійснюється на належному рівні для отримання консультації перейдіть для <a href="https://docs.google.com/forms/u/2/" target="_blank">заповнення форми</a> або <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=shell" target="_blank">альтернативної форми</a>.
+        </p>
+        <p class="consultation-message" id="increase-pension" style="display: none;">
+          Ваша виплата пенсії, враховуючи надану інформацію, може бути збільшена для отримання консультації перейдіть для <a href="https://docs.google.com/forms/u/2/" target="_blank">заповнення форми</a> або <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=shell" target="_blank">альтернативної форми</a>.
+        </p>
       </div>
       <div class="error-message" style="display: none;">
         <div class="wrapper-for-error">
@@ -829,6 +848,15 @@
         result = Math.round(result);
         $('.result-of-pensia').show();
         $('.result.price').text(result + ' грн');
+
+        // Порівняння розрахованої пенсії з введеною
+        if (result <= pensiaValue) {
+          $('#sufficient-pension').show();
+          $('#increase-pension').hide();
+        } else {
+          $('#sufficient-pension').show();
+          $('#increase-pension').show();
+        }
       });
     });
   </script>
