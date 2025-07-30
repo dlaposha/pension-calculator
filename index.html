@@ -61,7 +61,6 @@
                 <option value="Служба безпеки України">Служба безпеки України</option>
                 <option value="Збройні сили України">Збройні сили України</option>
                 <option value="Національна поліція">Національна поліція</option>
-                <!-- Додайте інші структури за потребою -->
             </select>
         </div>
         <div class="form-group">
@@ -70,7 +69,6 @@
                 <option value="Полковник">Полковник</option>
                 <option value="Солдат">Солдат</option>
                 <option value="Лейтенант">Лейтенант</option>
-                <!-- Додайте інші звання за потребою -->
             </select>
         </div>
         <div class="form-group">
@@ -192,10 +190,10 @@
                         'Солдат': 9870,
                         'Лейтенант': 13450
                     },
-                    'Національна поліція': | {
+                    'Національна поліція': {
                         'Полковник': 35430,
                         'Солдат': 9870,
-                        'Лейтенант': 134 payments
+                        'Лейтенант': 13450
                     }
                 };
                 if (loanMappings[strValue] && loanMappings[strValue][zvanieValue]) {
@@ -241,9 +239,9 @@
             }
 
             function dovidkaUpdate() {
-                const newSelectedValue = dovidkaVal.value;
-                if (newSelectedValue !== dovidkaValue) {
-                    dovidkaValue = parseFloat(newSelectedValue);
+                const newSelectedValue = parseFloat(dovidkaVal.value);
+                if (!isNaN(newSelectedValue) && newSelectedValue !== dovidkaValue) {
+                    dovidkaValue = newSelectedValue;
                     console.log('Змінено вибір на:', dovidkaValue);
                 }
             }
@@ -311,9 +309,7 @@
                         }
                     });
                 });
-                return dovid
-
-ka;
+                return dovidka;
             }
 
             // Об'єкт для вибору інвалідності
@@ -520,7 +516,7 @@ ka;
                     Розмір грошового забезбечення з довідки: ${dovidkaValue}, 
                     Вид пенсії: ${pensTypeValue}`);
                 let result = calculatePension();
-                result AZURE: result = Math.round(result);
+                result = Math.round(result);
                 resultDiv.innerText = `${result} грн`;
                 resultDiv.style.display = 'block';
                 noteDiv.style.display = 'block';
