@@ -1,540 +1,836 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор пенсії</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .calculator {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        select, input[type="number"], input[type="radio"] {
-            margin: 5px 0;
-        }
-        button {
-            padding: 10px 20px;
-            margin: 5px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .result {
-            margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .note {
-            font-size: 0.9em;
-            color: #555;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Калькулятор військової пенсії</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    input[type="text"],
+    input[type="number"],
+    select,
+    input[type="range"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .range-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pages-number {
+      font-size: 18px;
+      font-weight: bold;
+      color: #27ae60;
+      min-width: 50px;
+    }
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #27ae60;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #219653;
+    }
+    .result.price {
+      font-size: 28px;
+      font-weight: bold;
+      color: #27ae60;
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px;
+      background: #e9f7ef;
+      border-radius: 8px;
+      border: 2px dashed #27ae60;
+    }
+    .note {
+      font-size: 0.9em;
+      color: #555;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .tab {
+      display: none;
+    }
+    .tab:first-child {
+      display: block;
+    }
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 20px; }
+      h1 { font-size: 24px; }
+      .subtitle { font-size: 14px; }
+      .radio-item { font-size: 13px; }
+      button { padding: 12px; font-size: 16px; }
+      .result.price { font-size: 24px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="calculator">
-        <h1>Калькулятор пенсії</h1>
-        <div class="form-group">
-            <label for="Your-structure">Ваша структура:</label>
-            <select id="Your-structure">
-                <option value="Служба безпеки України">Служба безпеки України</option>
-                <option value="Збройні сили України">Збройні сили України</option>
-                <option value="Національна поліція">Національна поліція</option>
+  <div class="container">
+    <h1>Калькулятор військової пенсії</h1>
+    <p class="subtitle">Для військовослужбовців та працівників силових структур України</p>
+
+    <div id="calculator" class="calculator-form">
+      <form id="calculate" name="calculate-form" class="form-for-calculator step-form-wrapper">
+        <div class="grid-wrapper tab">
+          <div class="form-group">
+            <label for="Your-structure">Ваша структура</label>
+            <select id="Your-structure" name="Your-structure" required>
+              <option value="">Оберіть структуру</option>
+              <option value="Збройні сили України">Збройні сили України</option>
+              <option value="Державна служба надзвичайних ситуацій (МНС)">Державна служба надзвичайних ситуацій (МНС)</option>
+              <option value="Державна прикордонна служба">Державна прикордонна служба</option>
+              <option value="Міліція">Міліція</option>
+              <option value="Служба безпеки України">Служба безпеки України</option>
+              <option value="Державна пенітенціарна служба">Державна пенітенціарна служба</option>
+              <option value="Національна поліція">Національна поліція</option>
+              <option value="Національна гвардія">Національна гвардія</option>
+              <option value="Державна фіскальна служба">Державна фіскальна служба</option>
+              <option value="Державна спеціальна служба транспорту">Державна спеціальна служба транспорту</option>
+              <option value="Служба зовнішньої розвідки України">Служба зовнішньої розвідки України</option>
+              <option value="Космічне агентство">Космічне агентство</option>
+              <option value="Державна служба охорони">Державна служба охорони</option>
             </select>
-        </div>
-        <div class="form-group">
-            <label for="Your-rank">Ваше звання:</label>
-            <select id="Your-rank">
-                <option value="Полковник">Полковник</option>
-                <option value="Солдат">Солдат</option>
-                <option value="Лейтенант">Лейтенант</option>
+          </div>
+          <div class="form-group">
+            <label for="Your-rank">Ваше звання</label>
+            <select id="Your-rank" name="Your-rank" required>
+              <option value="">Оберіть звання</option>
+              <option value="Солдат">Солдат</option>
+              <option value="Старший солдат">Старший солдат</option>
+              <option value="Молодший сержант">Молодший сержант</option>
+              <option value="Сержант">Сержант</option>
+              <option value="Старший сержант">Старший сержант</option>
+              <option value="Молодший лейтенант">Молодший лейтенант</option>
+              <option value="Лейтенант">Лейтенант</option>
+              <option value="Старший лейтенант">Старший лейтенант</option>
+              <option value="Капітан">Капітан</option>
+              <option value="Майор">Майор</option>
+              <option value="Підполковник">Підполковник</option>
+              <option value="Полковник">Полковник</option>
+              <option value="Бригадний генерал">Бригадний генерал</option>
+              <option value="Генерал-майор">Генерал-майор</option>
+              <option value="Генерал-лейтенант">Генерал-лейтенант</option>
+              <option value="Генерал">Генерал</option>
             </select>
+          </div>
         </div>
-        <div class="form-group">
-            <button id="nextBtn1">Далі</button>
-        </div>
-        <div class="form-group" id="step2" style="display: none;">
-            <label>Років вислуги:</label>
-            <span class="pages-number">32</span>
-            <div class="year-wrap">
-                <label><input type="radio" name="year" id="2011" checked> До жовтня 2011 року</label>
-                <label><input type="radio" name="year" id="2011-2014"> Від жовтня 2011 до квітня 2014 року</label>
-                <label><input type="radio" name="year" id="2014-2018"> Після квітня 2014 року до березня 2018 року</label>
-                <label><input type="radio" name="year" id="2018"> Від березня 2018 року</label>
+
+        <div class="grid-wrapper range-slider-wrapper tab">
+          <div class="form-group">
+            <label for="pages">Років вислуги</label>
+            <div class="range-container">
+              <input type="range" min="20" max="65" value="20" class="pages-slider" name="pages" oninput="document.querySelector('.pages-number').textContent = this.value">
+              <span class="pages-number">20</span>
             </div>
-            <div class="chornobylec">
-                <label><input type="radio" name="chornobylec" id="noChorn" checked> Ні</label>
-                <label><input type="radio" name="chornobylec" id="firstCategoy"> Так, 1 категорія</label>
-                <label><input type="radio" name="chornobylec" id="secondCategoy"> Так, 2 категорія</label>
+          </div>
+          <div class="form-group year-wrap">
+            <label>Рік звільнення</label>
+            <div class="radio-group">
+              <label class="radio-item"><input type="radio" name="Release-year" value="До жовтня 2011 року" checked> До жовтня 2011 року</label>
+              <label class="radio-item"><input type="radio" name="Release-year" value="Від жовтня 2011 до квітня 2014 року"> Від жовтня 2011 до квітня 2014 року</label>
+              <label class="radio-item"><input type="radio" name="Release-year" value="Після квітня 2014 року до березня 2018 року"> Після квітня 2014 року до березня 2018 року</label>
+              <label class="radio-item"><input type="radio" name="Release-year" value="Від березня 2018 року"> Від березня 2018 року</label>
             </div>
-            <button id="backBtn1">Назад</button>
-            <button id="nextBtn2">Далі</button>
+          </div>
+          <div class="form-group chornobylec">
+            <label>Чи є категорія чорнобильця?</label>
+            <div class="radio-group">
+              <label class="radio-item"><input type="radio" name="Category-of-chernobyl" value="firstCategoy"> Так, 1 категорія</label>
+              <label class="radio-item"><input type="radio" name="Category-of-chernobyl" value="secondCategoy"> Так, 2 категорія</label>
+              <label class="radio-item"><input type="radio" name="Category-of-chernobyl" value="no" checked> Ні</label>
+            </div>
+          </div>
         </div>
-        <div class="form-group" id="step3" style="display: none;">
-            <label for="typeofpension">Ваш вид пенсії:</label>
-            <select id="typeofpension">
-                <option value="За вислугою років">За вислугою років</option>
-                <option value="По інвалідності">По інвалідності</option>
-                <option value="Звільнення у зв'язку зі станом здоров'я">Звільнення у зв'язку зі станом здоров'я</option>
-                <option value="За змішаним стажем">За змішаним стажем</option>
-                <option value="По втраті годувальника">По втраті годувальника</option>
+
+        <div class="grid-wrapper extra tab">
+          <div class="form-group">
+            <label for="typeofpension">Ваш вид пенсії</label>
+            <select id="typeofpension" name="Your-type-of-pension" required>
+              <option value="">Оберіть тип</option>
+              <option value="За вислугою років">За вислугою років</option>
+              <option value="Звільнення у зв’язку зі станом здоров’я">Звільнення у зв’язку зі станом здоров’я</option>
+              <option value="За змішаним стажем">За змішаним стажем</option>
+              <option value="По інвалідності">По інвалідності</option>
+              <option value="По втраті годувальника">По втраті годувальника</option>
             </select>
-            <label for="The-size-of-the-pension">Розмір пенсії (грн):</label>
-            <input type="number" id="The-size-of-the-pension" value="23610">
-            <div class="dovidka">
-                <label><input type="radio" name="dovidka" id="radio-2" checked> Немає довідки</label>
-                <label><input type="radio" name="dovidka" id="radio-3"> Є довідка про г/з</label>
+          </div>
+          <div class="form-group">
+            <label for="The-size-of-the-pension">Розмір пенсії (грн)</label>
+            <input type="number" id="The-size-of-the-pension" name="The-size-of-the-pension" value="23610" min="0" required>
+          </div>
+          <div class="grid-wrapper by-mixed-work-experience" style="display: none;">
+            <div class="form-group">
+              <label for="civilyears">Скільки у вас років цивільного стажу?</label>
+              <input type="number" id="civilyears" name="civilyears" value="0" min="0">
             </div>
-            <div id="dovidkaValueField" style="display: none;">
-                <label for="field-25">Розмір грошового забезпечення з довідки (грн):</label>
-                <input type="number" id="field-25" value="0">
+            <div class="form-group">
+              <label for="waryears">Скільки у вас років військової вислуги?</label>
+              <input type="number" id="waryears" name="waryears" value="32" min="0">
             </div>
-            <button id="backBtn2">Назад</button>
-            <button id="resultBtn">Розрахувати</button>
+            <div class="form-group health">
+              <label>Ви звільнились у зв’язку зі станом здоров’я?</label>
+              <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="Did-you-resign-due-to-health-issues" value="yes"> Так</label>
+                <label class="radio-item"><input type="radio" name="Did-you-resign-due-to-health-issues" value="no" checked> Ні</label>
+              </div>
+            </div>
+          </div>
+          <div class="grid-wrapper due-to-disability" style="display: none;">
+            <div class="form-group invalidnist">
+              <label>Причина інвалідності?</label>
+              <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="The-reason-for-the-disability" value="war"> Війна</label>
+                <label class="radio-item"><input type="radio" name="The-reason-for-the-disability" value="army"> Армія</label>
+                <label class="radio-item"><input type="radio" name="The-reason-for-the-disability" value="none" checked> Ні</label>
+              </div>
+            </div>
+            <div class="form-group inv-group">
+              <label>Яка група інвалідності?</label>
+              <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="Disability-group" value="1-3"> I чи II (по війні)</label>
+                <label class="radio-item"><input type="radio" name="Disability-group" value="2-3"> II чи III (звичайна)</label>
+                <label class="radio-item"><input type="radio" name="Disability-group" value="3"> III (звичайна)</label>
+                <label class="radio-item"><input type="radio" name="Disability-group" value="none" checked> Немає</label>
+              </div>
+            </div>
+          </div>
+          <div class="grid-wrapper upon-loss-of-breadwinner" style="display: none;">
+            <div class="form-group byloss">
+              <label>По втраті годувальника</label>
+              <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="Upon-loss-of-breadwinner" value="radio-8"> Військовий загинув на службі</label>
+                <label class="radio-item"><input type="radio" name="Upon-loss-of-breadwinner" value="radio-10"> Помер після служби</label>
+                <label class="radio-item"><input type="radio" name="Upon-loss-of-breadwinner" value="none" checked> Ні</label>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="result price" style="display: none;"></div>
-        <div class="note" style="display: none;">
-            Дана сума не враховує виплати на неповнолітніх дітей, гірські, за УБД та інших надбавок. Тому Ваша пенсія може бути ще більше.
+
+        <div class="grid-wrapper checkbox-wrapper dovidka-wrapper tab">
+          <div class="form-group dovidka">
+            <label>Розмір довідки про г/з</label>
+            <div class="radio-group">
+              <label class="radio-item"><input type="radio" name="dovidkaRadioGroup" value="radio-2" checked> Немає довідки</label>
+              <label class="radio-item"><input type="radio" name="dovidkaRadioGroup" value="radio-3"> Є довідка про г/з</label>
+            </div>
+          </div>
+          <div class="grid-wrapper dovidka-wrap last" style="display: none;">
+            <div class="form-group">
+              <label for="field-25">Скільки у вас сума довідки про г/з? (грн)</label>
+              <input type="number" id="field-25" name="field-25" value="0" min="0">
+            </div>
+          </div>
+          <button id="resultBtn" type="submit">Розрахувати</button>
         </div>
+
+        <div class="div-for-button">
+          <a id="prevBtn" href="#" class="submit-button back-button" style="display: none;">Назад</a>
+          <a id="nextBtn" href="#" class="request-button full-button next-button">Далі</a>
+        </div>
+      </form>
+      <div class="result-of-pensia" style="display: none;">
+        <div class="wraper-for-result">
+          <div class="field-label result">Ваш правильний розмір пенсії: </div>
+          <div class="field-label result price">— грн</div>
+        </div>
+        <p class="note">Дана сума не враховує виплати на неповнолітніх дітей, гірські, за УБД та інших надбавок. Тому Ваша пенсія може бути ще більше.</p>
+      </div>
+      <div class="error-message" style="display: none;">
+        <div class="wrapper-for-error">
+          <div class="error-message">Ой! Під час надсилання форми сталася помилка.</div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", (event) => {
-            console.log('script loaded');
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function() {
+      const pagesNumberElement = $('.pages-number');
+      const zvanieVal = $('#Your-rank');
+      const strVal = $('#Your-structure');
+      const pensTypeVal = $('#typeofpension');
+      const pensiaVal = $('#The-size-of-the-pension');
+      const civilyearsVal = $('#civilyears');
+      const waryearsVal = $('#waryears');
+      const dovidkaVal = $('#field-25');
+      const dovidkaWrap = $('.dovidka-wrap');
 
-            // Отримуємо посилання на елементи
-            const pagesNumberElement = document.querySelector('.pages-number');
-            const zvanieVal = document.getElementById('Your-rank');
-            const strVal = document.getElementById('Your-structure');
-            const pensiaVal = document.getElementById('The-size-of-the-pension');
-            const civilyearsVal = document.getElementById('civilyears');
-            const waryearsVal = document.getElementById('waryears');
-            const dovidkaVal = document.getElementById('field-25');
-            const pensTypeVal = document.getElementById('typeofpension');
-            const nextBtn1 = document.getElementById('nextBtn1');
-            const nextBtn2 = document.getElementById('nextBtn2');
-            const backBtn1 = document.getElementById('backBtn1');
-            const backBtn2 = document.getElementById('backBtn2');
-            const resultBtn = document.getElementById('resultBtn');
-            const step2 = document.getElementById('step2');
-            const step3 = document.getElementById('step3');
-            const resultDiv = document.querySelector('.result.price');
-            const noteDiv = document.querySelector('.note');
-            const dovidkaValueField = document.getElementById('dovidkaValueField');
+      let lastNumber, zvanieValue, strValue, pensTypeValue, pensiaValue, civilyearsValue, waryearsValue, dovidkaValue, year, chernobylec, health, invalidnist, invGroup, dovidka, vtrata;
 
-            // Глобальні змінні
-            let lastNumber;
-            let zvanieValue;
-            let strValue;
-            let pensTypeValue;
-            let pensiaValue;
-            let civilyearsValue = 0;
-            let waryearsValue = 0;
-            let loan;
-            let dovidkaValue = 0;
-            let calculatePension;
-            let year = null;
-            let chernobylec = null;
-            let health = null;
-            let invalidnist = null;
-            let invGroup = null;
-            let dovidka = null;
-            let pensValue = null;
-            let vtrata = null;
+      // Ініціалізація значень
+      function initValues() {
+        lastNumber = parseInt(pagesNumberElement.text()) || 20;
+        zvanieValue = zvanieVal.val() || 'Полковник';
+        strValue = strVal.val() || 'Служба безпеки України';
+        pensTypeValue = pensTypeVal.val() || 'За вислугою років';
+        pensiaValue = parseFloat(pensiaVal.val()) || 23610;
+        civilyearsValue = parseFloat(civilyearsVal.val()) || 0;
+        waryearsValue = parseFloat(waryearsVal.val()) || 32;
+        dovidkaValue = parseFloat(dovidkaVal.val()) || 0;
+        year = $('input[name="Release-year"]:checked').val() || 'До жовтня 2011 року';
+        chernobylec = $('input[name="Category-of-chernobyl"]:checked').val() === 'firstCategoy' ? 1 :
+                      $('input[name="Category-of-chernobyl"]:checked').val() === 'secondCategoy' ? 0.95 : 0;
+        health = $('input[name="Did-you-resign-due-to-health-issues"]:checked').val() || 'no';
+        dovidka = $('input[name="dovidkaRadioGroup"]:checked').val() || 'radio-2';
+        vtrata = $('input[name="Upon-loss-of-breadwinner"]:checked').val() || 'none';
+        invalidnist = $('input[name="The-reason-for-the-disability"]:checked').val() || 'none';
+        invGroup = $('input[name="Disability-group"]:checked').val() || 'none';
+      }
 
-            // Функція для оновлення числа вислуги
-            function updateNumber() {
-                const newNumber = parseInt(pagesNumberElement.textContent);
-                if (newNumber !== lastNumber) {
-                    lastNumber = newNumber;
-                    console.log('Змінено число на:', lastNumber);
-                }
-            }
+      // Оновлення вислуги
+      const observer = new MutationObserver(() => {
+        lastNumber = parseInt(pagesNumberElement.text()) || 20;
+      });
+      observer.observe(pagesNumberElement[0], { characterData: true, subtree: true });
 
-            // Спостереження за змінами числа вислуги
-            const observer = new MutationObserver(updateNumber);
-            observer.observe(pagesNumberElement, { characterData: true, subtree: true });
-            updateNumber();
+      // Оновлення типу пенсії
+      $('#typeofpension').change(function() {
+        var selectedValue = $(this).val();
+        var gridWrapperMixedExperience = $('.grid-wrapper.by-mixed-work-experience');
+        var gridWrapperDueToDisability = $('.grid-wrapper.due-to-disability');
+        var gridWrapperUponLossofBreadwinner = $('.grid-wrapper.upon-loss-of-breadwinner');
 
-            // Функція для оновлення loan
-            const updateLoan = (strValue, zvanieValue) => {
-                const loanMappings = {
-                    'Служба безпеки України': {
-                        'Полковник': 35430,
-                        'Солдат': 9870,
-                        'Лейтенант': 13450
-                    },
-                    'Збройні сили України': {
-                        'Полковник': 20233,
-                        'Солдат': 9870,
-                        'Лейтенант': 13450
-                    },
-                    'Національна поліція': {
-                        'Полковник': 35430,
-                        'Солдат': 9870,
-                        'Лейтенант': 13450
-                    }
-                };
-                if (loanMappings[strValue] && loanMappings[strValue][zvanieValue]) {
-                    loan = loanMappings[strValue][zvanieValue];
-                } else {
-                    loan = 0;
-                }
-                console.log('loan :', loan);
-                return loan;
-            };
+        if (selectedValue === 'За змішаним стажем') {
+          gridWrapperMixedExperience.show();
+          gridWrapperDueToDisability.hide();
+          gridWrapperUponLossofBreadwinner.hide();
+          $('#civilyears').prop('required', true);
+          $('#waryears').prop('required', true);
+          $('input[name="Did-you-resign-due-to-health-issues"]').prop('required', true);
+          $('input[name="The-reason-for-the-disability"]').prop('required', false);
+          $('input[name="Disability-group"]').prop('required', false);
+          $('input[name="Upon-loss-of-breadwinner"]').prop('required', false);
+        } else if (selectedValue === 'По інвалідності') {
+          gridWrapperMixedExperience.hide();
+          gridWrapperDueToDisability.show();
+          gridWrapperUponLossofBreadwinner.hide();
+          $('#civilyears').prop('required', false);
+          $('#waryears').prop('required', false);
+          $('input[name="Did-you-resign-due-to-health-issues"]').prop('required', false);
+          $('input[name="The-reason-for-the-disability"]').prop('required', true);
+          $('input[name="Disability-group"]').prop('required', true);
+          $('input[name="Upon-loss-of-breadwinner"]').prop('required', false);
+        } else if (selectedValue === 'По втраті годувальника') {
+          gridWrapperMixedExperience.hide();
+          gridWrapperDueToDisability.hide();
+          gridWrapperUponLossofBreadwinner.show();
+          $('#civilyears').prop('required', false);
+          $('#waryears').prop('required', false);
+          $('input[name="Did-you-resign-due-to-health-issues"]').prop('required', false);
+          $('input[name="The-reason-for-the-disability"]').prop('required', false);
+          $('input[name="Disability-group"]').prop('required', false);
+          $('input[name="Upon-loss-of-breadwinner"]').prop('required', true);
+        } else {
+          gridWrapperMixedExperience.hide();
+          gridWrapperDueToDisability.hide();
+          gridWrapperUponLossofBreadwinner.hide();
+          $('#civilyears').prop('required', false);
+          $('#waryears').prop('required', false);
+          $('input[name="Did-you-resign-due-to-health-issues"]').prop('required', false);
+          $('input[name="The-reason-for-the-disability"]').prop('required', false);
+          $('input[name="Disability-group"]').prop('required', false);
+          $('input[name="Upon-loss-of-breadwinner"]').prop('required', false);
+        }
+      });
 
-            // Функції оновлення значень
-            function zvanieUpdate() {
-                const newSelectedValue = zvanieVal.value;
-                if (newSelectedValue !== zvanieValue) {
-                    zvanieValue = newSelectedValue;
-                    console.log('Змінено вибір на:', zvanieValue);
-                }
-            }
+      // Обробка вибору довідки
+      $('.dovidka input[type="radio"]').on('change', function() {
+        if ($(this).prop('checked')) {
+          dovidka = $(this).attr('value');
+          if (dovidka === 'radio-3') {
+            dovidkaWrap.show();
+            $('#field-25').prop('required', true);
+          } else {
+            dovidkaWrap.hide();
+            $('#field-25').prop('required', false);
+          }
+        }
+      });
 
-            function strUpdate() {
-                const newSelectedValue = strVal.value;
-                if (newSelectedValue !== strValue) {
-                    strValue = newSelectedValue;
-                    console.log('Змінено вибір на:', strValue);
-                }
-            }
+      // Логіка вкладок
+      const tabs = $('.tab');
+      const nextBtn = $('#nextBtn');
+      const prevBtn = $('#prevBtn');
+      let currentTab = 0;
 
-            function pensTypeUpdate() {
-                const newSelectedValue = pensTypeVal.value;
-                if (newSelectedValue !== pensTypeValue) {
-                    pensTypeValue = newSelectedValue;
-                    console.log('Змінено вибір на:', pensTypeValue);
-                }
-            }
+      function showError(message) {
+        $('.error-message').text(message).show();
+      }
 
-            function pensUpdate() {
-                const newSelectedValue = parseFloat(pensiaVal.value);
-                if (!isNaN(newSelectedValue) && newSelectedValue !== pensiaValue) {
-                    pensiaValue = newSelectedValue;
-                    console.log('Змінено вибір на:', pensiaValue);
-                }
-            }
+      function clearErrors() {
+        $('.error-message').hide();
+      }
 
-            function dovidkaUpdate() {
-                const newSelectedValue = parseFloat(dovidkaVal.value);
-                if (!isNaN(newSelectedValue) && newSelectedValue !== dovidkaValue) {
-                    dovidkaValue = newSelectedValue;
-                    console.log('Змінено вибір на:', dovidkaValue);
-                }
-            }
-
-            function civilUpdate() {
-                const newSelectedValue = parseFloat(civilyearsVal?.value || 0);
-                if (!isNaN(newSelectedValue) && newSelectedValue !== civilyearsValue) {
-                    civilyearsValue = newSelectedValue;
-                    console.log('Змінено вибір на:', civilyearsValue);
-                }
-            }
-
-            function warUpdate() {
-                const newSelectedValue = parseFloat(waryearsVal?.value || 0);
-                if (!isNaN(newSelectedValue) && newSelectedValue !== waryearsValue) {
-                    waryearsValue = newSelectedValue;
-                    console.log('Змінено вибір на:', waryearsValue);
-                }
-            }
-
-            // Ініціалізація вибору року
-            function initYearSelection() {
-                let checkboxes = document.querySelectorAll('.year-wrap input[type="radio"]');
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.addEventListener('change', function() {
-                        if (checkbox.checked) {
-                            year = checkbox.getAttribute('id');
-                            console.log(year);
-                        }
-                    });
-                });
-                return year;
-            }
-
-            // Ініціалізація вибору чорнобильця
-            function initChornSelection() {
-                let checkboxes = document.querySelectorAll('.chornobylec input[type="radio"]');
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.addEventListener('change', function() {
-                        if (checkbox.checked) {
-                            chernobylec = checkbox.getAttribute('id');
-                            if (chernobylec === "firstCategoy") {
-                                chernobylec = 1;
-                            } else if (chernobylec === "secondCategoy") {
-                                chernobylec = 0.95;
-                            } else {
-                                chernobylec = 0;
-                            }
-                            console.log(chernobylec);
-                        }
-                    });
-                });
-                return chernobylec;
-            }
-
-            // Ініціалізація вибору довідки
-            function initDovidkaSelection() {
-                let checkboxes = document.querySelectorAll('.dovidka input[type="radio"]');
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.addEventListener('change', function() {
-                        if (checkbox.checked) {
-                            dovidka = checkbox.getAttribute('id');
-                            dovidkaValueField.style.display = dovidka === 'radio-3' ? 'block' : 'none';
-                            console.log(dovidka);
-                        }
-                    });
-                });
-                return dovidka;
-            }
-
-            // Об'єкт для вибору інвалідності
-            let invSelection = {
-                invalidnist: "",
-                invGroup: "",
-                initInvalidnistSelection: function () {
-                    let checkboxes = document.querySelectorAll('.invalidnist input[type="radio"]');
-                    checkboxes.forEach(function (checkbox) {
-                        checkbox.addEventListener('change', function () {
-                            if (checkbox.checked) {
-                                invSelection.invalidnist = checkbox.getAttribute('id');
-                                console.log(invSelection.invalidnist);
-                            }
-                        });
-                    });
-                },
-                initInvGroupSelection: function () {
-                    let checkboxes = document.querySelectorAll('.inv-group input[type="radio"]');
-                    checkboxes.forEach(function (checkbox) {
-                        checkbox.addEventListener('change', function () {
-                            if (checkbox.checked) {
-                                invSelection.invGroup = checkbox.getAttribute('id');
-                                console.log(invSelection.invGroup);
-                            }
-                        });
-                    });
-                },
-                updateInvPercent: function () {
-                    let invPercentMap = {
-                        "army": {
-                            "1-3": 0.7,
-                            "2-3": 0.6,
-                            "3": 0.4
-                        },
-                        "war": {
-                            "1-3": 1,
-                            "2-3": 0.8,
-                            "3": 0.6
-                        }
-                    };
-                    if (invPercentMap[invSelection.invalidnist] && invPercentMap[invSelection.invalidnist][invSelection.invGroup]) {
-                        let invPercent = invPercentMap[invSelection.invalidnist][invSelection.invGroup];
-                        console.log(invSelection.invalidnist, invSelection.invGroup, invPercent);
-                        return invPercent;
-                    } else {
-                        return 0;
-                    }
-                }
-            };
-
-            // Функція для обчислення відсотка пенсії
-            function updatePensValue() {
-                zvanieUpdate();
-                strUpdate();
-                pensUpdate();
-                civilUpdate();
-                warUpdate();
-                updateNumber();
-                dovidkaUpdate();
-                pensTypeUpdate();
-                let invPercent = invSelection.updateInvPercent();
-                let mixedVal = civilyearsValue + waryearsValue;
-                console.log(mixedVal);
-                let pensValue = 0;
-                console.log(`invPercent: ${invPercent}`);
-                console.log(`Initial pensValue: ${pensValue}`);
-                console.log(`Initial pensValue: ${chernobylec}`);
-                if (pensTypeValue === "За вислугою років") {
-                    console.log(`Тип пенсії: ${pensTypeValue}`);
-                    let years = lastNumber - 20;
-                    years = years * 3;
-                    pensValue = 50 + years;
-                    pensValue = pensValue / 100;
-                    if (year === '2011' && pensValue > 0.8) {
-                        if (chernobylec === 1) {
-                            pensValue = Math.min(pensValue, 1);
-                        } else if (chernobylec === 0.95) {
-                            pensValue = Math.min(pensValue, 0.95);
-                        } else {
-                            pensValue = Math.min(pensValue, 0.8);
-                        }
-                    } else if (year === '2011-2014' && pensValue > 0.9) {
-                        if (chernobylec === 1) {
-                            pensValue = Math.min(pensValue, 1);
-                        } else if (chernobylec === 0.95) {
-                            pensValue = Math.min(pensValue, 0.95);
-                        } else {
-                            pensValue = Math.min(pensValue, 0.9);
-                        }
-                    } else if (year === '2014-2018' && pensValue > 0.7) {
-                        if (chernobylec === 1) {
-                            pensValue = Math.min(pensValue, 1);
-                        } else if (chernobylec === 0.95) {
-                            pensValue = Math.min(pensValue, 0.95);
-                        } else {
-                            pensValue = Math.min(pensValue, 0.7);
-                        }
-                    } else if (year === '2018' && pensValue > 0.7) {
-                        if (chernobylec === 1) {
-                            pensValue = pensValue + 0.2;
-                            pensValue = Math.min(pensValue, 1);
-                        } else if (chernobylec === 0.95) {
-                            pensValue = pensValue + 0.2;
-                            pensValue = Math.min(pensValue, 0.95);
-                        } else if (strValue === 'Міліція (МВС)' || strValue === 'Національна поліція') {
-                            pensValue = Math.min(pensValue, 0.7);
-                        } else {
-                            pensValue = Math.min(pensValue, 0.7) + 0.2;
-                        }
-                    } else {
-                        pensValue = pensValue;
-                    }
-                }
-                pensValue = Number(pensValue);
-                console.log(`Процент который нам нужен: ${pensValue}`);
-                return pensValue;
-            }
-
-            // Функція для обчислення пенсії
-            calculatePension = function() {
-                zvanieUpdate();
-                strUpdate();
-                pensUpdate();
-                civilUpdate();
-                warUpdate();
-                updateNumber();
-                dovidkaUpdate();
-                pensTypeUpdate();
-                let pensValue = updatePensValue();
-                let invPercent = invSelection.updateInvPercent();
-                console.log(`Процент который нам нужен в начале просчета пенсии: ${pensValue}`);
-                let loan = updateLoan(strValue, zvanieValue);
-                let result = 0;
-                if (pensTypeValue === "За вислугою років") {
-                    if (dovidka === "radio-3") {
-                        result = dovidkaValue * pensValue;
-                        console.log(`result вислуга: ${result}`);
-                    } else if (dovidka === "radio-2") {
-                        result = loan * pensValue;
-                        console.log(`вислуга без довідки: ${result}`);
-                    }
-                    result = result + 0.14 * result;
-                    console.log(`result: ${result}`);
-                    let preResult = result * 0.197;
-                    console.log(`pre-result: ${preResult}`);
-                    if (preResult > 1500) {
-                        preResult = 1500;
-                    }
-                    console.log(`pre-result: ${preResult}`);
-                    result = preResult + result;
-                }
-                if (year !== '2018') {
-                    console.log(`проверка на добавленние 2к грн(перед добавлением) - ${result}`);
-                    result = result + 2000;
-                    console.log(`проверка на добавленние 2к грн(после добавления) - ${result}`);
-                }
-                console.log(`результат перед возвратом функции - ${result}`);
-                return result;
-            };
-
-            // Обробники подій для навігації
-            nextBtn1.addEventListener('click', () => {
-                step2.style.display = 'block';
-                nextBtn1.style.display = 'none';
+      function showTab(n) {
+        clearErrors();
+        if (currentTab === 1) {
+          const releaseYearChecked = $('input[name="Release-year"]:checked').length;
+          const chernobylCategoryChecked = $('input[name="Category-of-chernobyl"]:checked').length;
+          if (!releaseYearChecked || !chernobylCategoryChecked) {
+            showError("Будь ласка, оберіть рік звільнення та категорію чорнобильця перед переходом.");
+            return;
+          }
+        } else if (currentTab === 2) {
+          const selectedTypeOfPension = $('#typeofpension').val();
+          const sizeOfPension = $('#The-size-of-the-pension').val();
+          if (sizeOfPension === "") {
+            showError("Будь ласка, заповніть розмір пенсії перед переходом далі.");
+            return;
+          }
+          if (selectedTypeOfPension === "По інвалідності") {
+            const disabilityRadioGroup = $('input[name="Disability-group"]');
+            let checked = false;
+            disabilityRadioGroup.each(function() {
+              if ($(this).prop('checked')) checked = true;
             });
-
-            backBtn1.addEventListener('click', () => {
-                step2.style.display = 'none';
-                nextBtn1.style.display = 'block';
+            if (!checked) {
+              showError("Будь ласка, оберіть групу інвалідності.");
+              return;
+            }
+          } else if (selectedTypeOfPension === "За змішаним стажем") {
+            const healthRadioChecked = $('input[name="Did-you-resign-due-to-health-issues"]:checked').length;
+            const civilianYears = $('#civilyears').val();
+            const warYears = $('#waryears').val();
+            if (!healthRadioChecked) {
+              showError("Будь ласка, оберіть відповідь на питання про звільнення у зв'язку зі станом здоров'я.");
+              return;
+            }
+            if (civilianYears === "" || warYears === "") {
+              showError("Будь ласка, заповніть всі поля на цьому кроці перед переходом.");
+              return;
+            }
+          } else if (selectedTypeOfPension === "По втраті годувальника") {
+            const lossOfBreadwinnerRadioGroup = $('input[name="Upon-loss-of-breadwinner"]');
+            let checked = false;
+            lossOfBreadwinnerRadioGroup.each(function() {
+              if ($(this).prop('checked')) checked = true;
             });
+            if (!checked) {
+              showError("Будь ласка, оберіть причину втрати годувальника.");
+              return;
+            }
+          }
+        }
 
-            nextBtn2.addEventListener('click', () => {
-                step3.style.display = 'block';
-                step2.style.display = 'none';
-            });
+        tabs.eq(currentTab).hide();
+        currentTab += n;
+        if (currentTab >= tabs.length) currentTab = tabs.length - 1;
+        if (currentTab < 0) currentTab = 0;
+        tabs.eq(currentTab).show();
 
-            backBtn2.addEventListener('click', () => {
-                step3.style.display = 'none';
-                step2.style.display = 'block';
-            });
+        prevBtn.css('display', currentTab === 0 ? 'none' : 'inline');
+        nextBtn.css('display', currentTab === tabs.length - 1 ? 'none' : 'inline');
+      }
 
-            // Обробник для кнопки "Розрахувати"
-            resultBtn.addEventListener('click', function (e) {
-                zvanieUpdate();
-                strUpdate();
-                pensUpdate();
-                civilUpdate();
-                warUpdate();
-                updateNumber();
-                dovidkaUpdate();
-                pensTypeUpdate();
-                let pensValue = updatePensValue();
-                let invPercent = invSelection.updateInvPercent();
-                let loan = updateLoan(strValue, zvanieValue);
-                console.log(`Грошове забезпечення:${loan}, 
-                    роки звільнення: ${year}, 
-                    Чи є чорнобильське?: ${chernobylec}, 
-                    Звання: ${zvanieValue}, 
-                    Структура: ${strValue}, 
-                    Розмір пенсії: ${pensiaValue}, 
-                    Роки вислуги: ${lastNumber}, 
-                    Відсоток з інвалідності: ${invPercent}, 
-                    Розмір грошового забезбечення з довідки: ${dovidkaValue}, 
-                    Вид пенсії: ${pensTypeValue}`);
-                let result = calculatePension();
-                result = Math.round(result);
-                resultDiv.innerText = `${result} грн`;
-                resultDiv.style.display = 'block';
-                noteDiv.style.display = 'block';
-                console.log(`результат пенсії: ${result} грн`);
-            });
+      nextBtn.on('click', function(e) {
+        e.preventDefault();
+        showTab(1);
+      });
 
-            // Ініціалізація
-            initYearSelection();
-            initChornSelection();
-            initDovidkaSelection();
-            zvanieUpdate();
-            strUpdate();
-            pensUpdate();
-            civilUpdate();
-            warUpdate();
-            dovidkaUpdate();
-            pensTypeUpdate();
-        });
-    </script>
+      prevBtn.on('click', function(e) {
+        e.preventDefault();
+        showTab(-1);
+      });
+
+      // Функція для оновлення loan
+      const updateLoan = (str, zvanie) => {
+        const map = {
+          'Служба безпеки України': {
+            'Солдат': 9870,
+            'Старший солдат': 10000,
+            'Молодший сержант': 10500,
+            'Сержант': 11000,
+            'Старший сержант': 11500,
+            'Молодший лейтенант': 12500,
+            'Лейтенант': 13450,
+            'Старший лейтенант': 14500,
+            'Капітан': 17000,
+            'Майор': 19000,
+            'Підполковник': 22000,
+            'Полковник': 35430,
+            'Бригадний генерал': 40000,
+            'Генерал-майор': 43000,
+            'Генерал-лейтенант': 46000,
+            'Генерал': 50000
+          },
+          'Збройні сили України': {
+            'Солдат': 9870,
+            'Старший солдат': 10000,
+            'Молодший сержант': 10500,
+            'Сержант': 11000,
+            'Старший сержант': 11500,
+            'Молодший лейтенант': 12500,
+            'Лейтенант': 13450,
+            'Старший лейтенант': 14500,
+            'Капітан': 17000,
+            'Майор': 19000,
+            'Підполковник': 22000,
+            'Полковник': 20233,
+            'Бригадний генерал': 35000,
+            'Генерал-майор': 38000,
+            'Генерал-лейтенант': 41000,
+            'Генерал': 47000
+          },
+          'Національна поліція': {
+            'Солдат': 9870,
+            'Старший солдат': 10000,
+            'Молодший сержант': 10500,
+            'Сержант': 11000,
+            'Старший сержант': 11500,
+            'Молодший лейтенант': 12500,
+            'Лейтенант': 13450,
+            'Старший лейтенант': 14500,
+            'Капітан': 17000,
+            'Майор': 19000,
+            'Підполковник': 22000,
+            'Полковник': 35430,
+            'Бригадний генерал': 40000,
+            'Генерал-майор': 43000,
+            'Генерал-лейтенант': 46000,
+            'Генерал': 50000
+          },
+          'Державна служба надзвичайних ситуацій (МНС)': {
+            'Солдат': 9500,
+            'Старший солдат': 9800,
+            'Молодший сержант': 10200,
+            'Сержант': 10700,
+            'Старший сержант': 11200,
+            'Молодший лейтенант': 12200,
+            'Лейтенант': 13000,
+            'Старший лейтенант': 14000,
+            'Капітан': 16500,
+            'Майор': 18500,
+            'Підполковник': 21000,
+            'Полковник': 20136,
+            'Бригадний генерал': 34000,
+            'Генерал-майор': 37000,
+            'Генерал-лейтенант': 40000,
+            'Генерал': 46000
+          },
+          'Державна прикордонна служба': {
+            'Солдат': 10000,
+            'Старший солдат': 10300,
+            'Молодший сержант': 10800,
+            'Сержант': 11300,
+            'Старший сержант': 11800,
+            'Молодший лейтенант': 12800,
+            'Лейтенант': 13750,
+            'Старший лейтенант': 14800,
+            'Капітан': 17300,
+            'Майор': 19300,
+            'Підполковник': 22300,
+            'Полковник': 35930,
+            'Бригадний генерал': 41000,
+            'Генерал-майор': 44000,
+            'Генерал-лейтенант': 47000,
+            'Генерал': 51000
+          },
+          'Міліція': {
+            'Солдат': 9500,
+            'Старший солдат': 9800,
+            'Молодший сержант': 10200,
+            'Сержант': 10700,
+            'Старший сержант': 11200,
+            'Молодший лейтенант': 12200,
+            'Лейтенант': 13000,
+            'Старший лейтенант': 14000,
+            'Капітан': 16500,
+            'Майор': 18500,
+            'Підполковник': 21000,
+            'Полковник': 27951,
+            'Бригадний генерал': 34000,
+            'Генерал-майор': 37000,
+            'Генерал-лейтенант': 40000,
+            'Генерал': 46000
+          },
+          'Державна пенітенціарна служба': {
+            'Солдат': 9000,
+            'Старший солдат': 9300,
+            'Молодший сержант': 9700,
+            'Сержант': 10200,
+            'Старший сержант': 10700,
+            'Молодший лейтенант': 11700,
+            'Лейтенант': 12500,
+            'Старший лейтенант': 13500,
+            'Капітан': 16000,
+            'Майор': 18000,
+            'Підполковник': 20000,
+            'Полковник': 20000,
+            'Бригадний генерал': 33000,
+            'Генерал-майор': 36000,
+            'Генерал-лейтенант': 39000,
+            'Генерал': 45000
+          },
+          'Національна гвардія': {
+            'Солдат': 9870,
+            'Старший солдат': 10000,
+            'Молодший сержант': 10500,
+            'Сержант': 11000,
+            'Старший сержант': 11500,
+            'Молодший лейтенант': 12500,
+            'Лейтенант': 13450,
+            'Старший лейтенант': 14500,
+            'Капітан': 17000,
+            'Майор': 19000,
+            'Підполковник': 22000,
+            'Полковник': 27951,
+            'Бригадний генерал': 40000,
+            'Генерал-майор': 43000,
+            'Генерал-лейтенант': 46000,
+            'Генерал': 50000
+          },
+          'Державна фіскальна служба': {
+            'Солдат': 9500,
+            'Старший солдат': 9800,
+            'Молодший сержант': 10200,
+            'Сержант': 10700,
+            'Старший сержант': 11200,
+            'Молодший лейтенант': 12200,
+            'Лейтенант': 13000,
+            'Старший лейтенант': 14000,
+            'Капітан': 16500,
+            'Майор': 18500,
+            'Підполковник': 21000,
+            'Полковник': 25000,
+            'Бригадний генерал': 34000,
+            'Генерал-майор': 37000,
+            'Генерал-лейтенант': 40000,
+            'Генерал': 46000
+          },
+          'Державна спеціальна служба транспорту': {
+            'Солдат': 9500,
+            'Старший солдат': 9800,
+            'Молодший сержант': 10200,
+            'Сержант': 10700,
+            'Старший сержант': 11200,
+            'Молодший лейтенант': 12200,
+            'Лейтенант': 13000,
+            'Старший лейтенант': 14000,
+            'Капітан': 16500,
+            'Майор': 18500,
+            'Підполковник': 21000,
+            'Полковник': 25000,
+            'Бригадний генерал': 34000,
+            'Генерал-майор': 37000,
+            'Генерал-лейтенант': 40000,
+            'Генерал': 46000
+          },
+          'Служба зовнішньої розвідки України': {
+            'Солдат': 9870,
+            'Старший солдат': 10000,
+            'Молодший сержант': 10500,
+            'Сержант': 11000,
+            'Старший сержант': 11500,
+            'Молодший лейтенант': 12500,
+            'Лейтенант': 13450,
+            'Старший лейтенант': 14500,
+            'Капітан': 17000,
+            'Майор': 19000,
+            'Підполковник': 22000,
+            'Полковник': 35430,
+            'Бригадний генерал': 40000,
+            'Генерал-майор': 43000,
+            'Генерал-лейтенант': 46000,
+            'Генерал': 50000
+          },
+          'Космічне агентство': {
+            'Солдат': 9500,
+            'Старший солдат': 9800,
+            'Молодший сержант': 10200,
+            'Сержант': 10700,
+            'Старший сержант': 11200,
+            'Молодший лейтенант': 12200,
+            'Лейтенант': 13000,
+            'Старший лейтенант': 14000,
+            'Капітан': 16500,
+            'Майор': 18500,
+            'Підполковник': 21000,
+            'Полковник': 25000,
+            'Бригадний генерал': 34000,
+            'Генерал-майор': 37000,
+            'Генерал-лейтенант': 40000,
+            'Генерал': 46000
+          },
+          'Державна служба охорони': {
+            'Солдат': 9500,
+            'Старший солдат': 9800,
+            'Молодший сержант': 10200,
+            'Сержант': 10700,
+            'Старший сержант': 11200,
+            'Молодший лейтенант': 12200,
+            'Лейтенант': 13000,
+            'Старший лейтенант': 14000,
+            'Капітан': 16500,
+            'Майор': 18500,
+            'Підполковник': 21000,
+            'Полковник': 25000,
+            'Бригадний генерал': 34000,
+            'Генерал-майор': 37000,
+            'Генерал-лейтенант': 40000,
+            'Генерал': 46000
+          }
+        };
+        return map[str] && map[str][zvanie] ? map[str][zvanie] : 0;
+      };
+
+      // Розрахунок пенсії
+      $('#resultBtn').on('click', function(e) {
+        e.preventDefault();
+        initValues();
+
+        const releaseYearChecked = $('input[name="Release-year"]:checked').length;
+        const chernobylCategoryChecked = $('input[name="Category-of-chernobyl"]:checked').length;
+        const sizeOfPension = $('#The-size-of-the-pension').val();
+
+        if (!releaseYearChecked || !chernobylCategoryChecked || sizeOfPension === "") {
+          showError("Будь ласка, заповніть усі обов’язкові поля.");
+          return;
+        }
+
+        if (pensTypeValue === "По інвалідності") {
+          const disabilityRadioGroup = $('input[name="Disability-group"]');
+          let checked = false;
+          disabilityRadioGroup.each(function() {
+            if ($(this).prop('checked')) checked = true;
+          });
+          if (!checked) {
+            showError("Будь ласка, оберіть групу інвалідності.");
+            return;
+          }
+        } else if (pensTypeValue === "За змішаним стажем") {
+          const healthRadioChecked = $('input[name="Did-you-resign-due-to-health-issues"]:checked').length;
+          const civilianYears = $('#civilyears').val();
+          const warYears = $('#waryears').val();
+          if (!healthRadioChecked || civilianYears === "" || warYears === "") {
+            showError("Будь ласка, заповніть усі поля для змішаного стажу.");
+            return;
+          }
+        } else if (pensTypeValue === "По втраті годувальника") {
+          const lossOfBreadwinnerRadioGroup = $('input[name="Upon-loss-of-breadwinner"]');
+          let checked = false;
+          lossOfBreadwinnerRadioGroup.each(function() {
+            if ($(this).prop('checked')) checked = true;
+          });
+          if (!checked) {
+            showError("Будь ласка, оберіть причину втрати годувальника.");
+            return;
+          }
+        }
+
+        let percent = 0;
+        let result = 0;
+
+        if (pensTypeValue === 'За вислугою років') {
+          percent = lastNumber >= 20 ? 0.5 + (lastNumber - 20) * 0.03 : 0;
+          if (year === 'До жовтня 2011 року') percent = Math.min(percent, 0.9);
+          else percent = Math.min(percent, 0.7);
+          result = updateLoan(strValue, zvanieValue) * percent;
+        } else if (pensTypeValue === 'Звільнення у зв’язку зі станом здоров’я') {
+          percent = lastNumber >= 20 ? 0.5 + (lastNumber - 20) * 0.03 : 0;
+          percent = Math.min(percent, 0.7);
+          result = updateLoan(strValue, zvanieValue) * percent;
+          if (health === 'yes') result *= 1.25;
+        } else if (pensTypeValue === 'За змішаним стажем') {
+          const totalYears = parseFloat(civilyearsValue) + parseFloat(waryearsValue);
+          percent = totalYears >= 25 ? 0.5 + (totalYears - 25) * 0.01 : 0;
+          percent = Math.min(percent, 0.7);
+          result = updateLoan(strValue, zvanieValue) * percent;
+          if (health === 'yes') result *= 1.25;
+        } else if (pensTypeValue === 'По інвалідності') {
+          if (invGroup === '1-3') {
+            percent = invalidnist === 'war' ? 0.7 : 0.6;
+          } else if (invGroup === '2-3') {
+            percent = invalidnist === 'war' ? 0.6 : 0.55;
+          } else if (invGroup === '3') {
+            percent = 0.4;
+          }
+          result = updateLoan(strValue, zvanieValue) * percent;
+        } else if (pensTypeValue === 'По втраті годувальника') {
+          percent = vtrata === 'radio-8' ? 0.7 : 0.4;
+          result = updateLoan(strValue, zvanieValue) * percent;
+        }
+
+        if (dovidka === 'radio-3' && dovidkaValue > 0) {
+          result = dovidkaValue * percent;
+        }
+
+        if (chernobylec > 0) {
+          result *= chernobylec;
+        }
+
+        if (year === 'Від березня 2018 року') {
+          const minPension = 0.4 * updateLoan(strValue, zvanieValue);
+          result = Math.max(result, minPension);
+        }
+
+        result = Math.round(result);
+        $('.result-of-pensia').show();
+        $('.result.price').text(result + ' грн');
+      });
+    });
+  </script>
 </body>
 </html>
