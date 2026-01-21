@@ -1,864 +1,1654 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Калькулятор військової пенсії</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f4f6f9;
-      color: #333;
-      line-height: 1.6;
-      padding: 20px;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 10px;
-    }
-    p.subtitle {
-      text-align: center;
-      color: #7f8c8d;
-      font-size: 16px;
-      margin-bottom: 30px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-    input[type="text"],
-    input[type="number"],
-    select,
-    input[type="range"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #bdc3c7;
-      border-radius: 6px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    .range-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .pages-number {
-      font-size: 18px;
-      font-weight: bold;
-      color: #27ae60;
-      min-width: 50px;
-    }
-    .radio-group {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    .radio-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      background: #27ae60;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    button:hover {
-      background: #219653;
-    }
-    .result.price {
-      font-size: 28px;
-      font-weight: bold;
-      color: #27ae60;
-      text-align: center;
-      margin-top: 20px;
-      padding: 15px;
-      background: #e9f7ef;
-      border-radius: 8px;
-      border: 2px dashed #27ae60;
-    }
-    .note {
-      font-size: 0.9em;
-      color: #555;
-      text-align: center;
-      margin-top: 10px;
-    }
-    .tab {
-      display: none;
-    }
-    .tab:first-child {
-      display: block;
-    }
-    .error-message {
-      color: red;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-    .consultation-message {
-      font-size: 1em;
-      color: #2c3e50;
-      text-align: center;
-      margin-top: 10px;
-    }
-    .consultation-message a {
-      color: #27ae60;
-      text-decoration: underline;
-    }
-    .consultation-message a:hover {
-      color: #219653;
-    }
-    @media (max-width: 600px) {
-      .container { padding: 20px; }
-      h1 { font-size: 24px; }
-      .subtitle { font-size: 14px; }
-      .radio-item { font-size: 13px; }
-      button { padding: 12px; font-size: 16px; }
-      .result.price { font-size: 24px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор військової пенсії | Адвокат Дмитро Лапоша</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 87, 184, 0.15);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #0057b8 0%, #004494 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+        }
+        
+        h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .phone-number {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .phone-number:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .phone-number::before {
+            content: "📞";
+            font-size: 24px;
+        }
+        
+        .qr-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .qr-text {
+            font-size: 16px;
+            color: white;
+            max-width: 180px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        
+        .content {
+            padding: 35px;
+        }
+        
+        .calculator-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+        }
+        
+        @media (max-width: 900px) {
+            .calculator-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .input-section {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-title {
+            color: #0057b8;
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 16px;
+        }
+        
+        select, input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: white;
+        }
+        
+        select:focus, input:focus {
+            border-color: #0057b8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 87, 184, 0.1);
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #e2e8f0;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #0057b8;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pages-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0057b8;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .radio-item:hover {
+            border-color: #0057b8;
+            background: #f0f7ff;
+        }
+        
+        .radio-item input[type="radio"] {
+            margin: 0;
+        }
+        
+        .pension-type-section {
+            background-color: #fff8e1;
+            border-radius: 12px;
+            padding: 22px;
+            margin: 22px 0;
+            border-left: 5px solid #ffd700;
+        }
+        
+        .pension-type-section h4 {
+            color: #b45309;
+            margin-bottom: 16px;
+            font-size: 17px;
+        }
+        
+        .type-option {
+            margin-bottom: 12px;
+            padding: 14px;
+            background-color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        
+        .type-option:hover {
+            border-color: #0057b8;
+            background-color: #f0f7ff;
+            transform: translateX(5px);
+        }
+        
+        .type-option.active {
+            border-color: #0057b8;
+            background-color: #e6f2ff;
+            box-shadow: 0 3px 10px rgba(0, 87, 184, 0.1);
+        }
+        
+        .type-title {
+            font-weight: 600;
+            color: #0057b8;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+        
+        .type-description {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .additional-fields {
+            background: #f0f9ff;
+            border: 2px solid #bae6fd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .additional-fields.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn-calculate {
+            width: 100%;
+            background: linear-gradient(135deg, #0057b8 0%, #004494 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        
+        .btn-calculate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 87, 184, 0.4);
+        }
+        
+        .results-section {
+            background-color: #f0f7ff;
+            border-radius: 12px;
+            padding: 35px;
+            margin-top: 35px;
+            border: 2px solid #b8d4f0;
+            display: none;
+        }
+        
+        .results-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .results-title {
+            color: #0057b8;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+        
+        .result-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid #0057b8;
+            transition: all 0.3s;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .result-card.total {
+            border-top-color: #ffd700;
+            background: linear-gradient(135deg, #fffdf0 0%, white 100%);
+        }
+        
+        .result-label {
+            font-size: 15px;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .result-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0057b8;
+        }
+        
+        .result-card.total .result-value {
+            color: #d4a017;
+            font-size: 36px;
+        }
+        
+        .consultation-box {
+            background-color: #fff8e1;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid #ffd700;
+        }
+        
+        .consultation-title {
+            color: #b45309;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .consultation-title::before {
+            content: "⚖️";
+            font-size: 24px;
+        }
+        
+        .consultation-content {
+            color: #78350f;
+            line-height: 1.7;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .consultation-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .consultation-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #0057b8;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .consultation-link:hover {
+            background: #004494;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 87, 184, 0.3);
+        }
+        
+        .consultation-link.secondary {
+            background: #27ae60;
+        }
+        
+        .consultation-link.secondary:hover {
+            background: #219653;
+        }
+        
+        .note-box {
+            background-color: #fff8e1;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid #ffd700;
+        }
+        
+        .note-title {
+            color: #b45309;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .note-content {
+            color: #78350f;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #718096;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+            border: 3px solid white;
+            transition: all 0.3s;
+        }
+        
+        .step.active .step-number {
+            background: #0057b8;
+            color: white;
+            box-shadow: 0 0 0 3px rgba(0, 87, 184, 0.2);
+        }
+        
+        .step.completed .step-number {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            right: -50%;
+            height: 3px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        
+        .step:last-child .step-line {
+            display: none;
+        }
+        
+        .step.completed .step-line {
+            background: #27ae60;
+        }
+        
+        .step-label {
+            font-size: 12px;
+            color: #718096;
+            text-align: center;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        .step.active .step-label {
+            color: #0057b8;
+            font-weight: 600;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .btn-nav {
+            padding: 14px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            background: #0057b8;
+            color: white;
+        }
+        
+        .btn-nav:hover {
+            background: #004494;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 87, 184, 0.3);
+        }
+        
+        .btn-nav.secondary {
+            background: #6c757d;
+        }
+        
+        .btn-nav.secondary:hover {
+            background: #5a6268;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 12px;
+            background: #fdf2f2;
+            border-radius: 6px;
+            border: 1px solid #f8d7da;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 35px;
+            padding: 25px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 15px;
+            color: #718096;
+        }
+        
+        .flag {
+            display: inline-block;
+            width: 28px;
+            height: 18px;
+            background: linear-gradient(to bottom, #0057b8 50%, #ffd700 50%);
+            margin: 0 10px;
+            vertical-align: middle;
+            border-radius: 2px;
+        }
+        
+        .info-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #0057b8;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            margin-left: 5px;
+            cursor: help;
+        }
+        
+        .accuracy-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #856404;
+        }
+        
+        .law-reference {
+            background: #e8f4fd;
+            border: 1px solid #b8d4f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #2c5282;
+        }
+        
+        .premium-info-box {
+            background: #f0f9ff;
+            border: 2px solid #bae6fd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        .premium-info-value {
+            color: #0c4a6e;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .premium-info-description {
+            color: #475569;
+            font-size: 14px;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-nav {
+                width: 100%;
+            }
+            
+            .phones-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+            }
+            
+            .qr-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Калькулятор військової пенсії</h1>
-    <p class="subtitle">Для військовослужбовців та працівників силових структур України</p>
-
-    <div id="calculator" class="calculator-form">
-      <form id="calculate" name="calculate-form" class="form-for-calculator step-form-wrapper">
-        <div class="grid-wrapper tab">
-          <div class="form-group">
-            <label for="Your-structure">Ваша структура</label>
-            <select id="Your-structure" name="Your-structure" required>
-              <option value="">Оберіть структуру</option>
-              <option value="Збройні сили України">Збройні сили України</option>
-              <option value="Державна служба надзвичайних ситуацій (МНС)">Державна служба надзвичайних ситуацій (МНС)</option>
-              <option value="Державна прикордонна служба">Державна прикордонна служба</option>
-              <option value="Міліція">Міліція</option>
-              <option value="Служба безпеки України">Служба безпеки України</option>
-              <option value="Державна пенітенціарна служба">Державна пенітенціарна служба</option>
-              <option value="Національна поліція">Національна поліція</option>
-              <option value="Національна гвардія">Національна гвардія</option>
-              <option value="Державна фіскальна служба">Державна фіскальна служба</option>
-              <option value="Державна спеціальна служба транспорту">Державна спеціальна служба транспорту</option>
-              <option value="Служба зовнішньої розвідки України">Служба зовнішньої розвідки України</option>
-              <option value="Космічне агентство">Космічне агентство</option>
-              <option value="Державна служба охорони">Державна служба охорони</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="Your-rank">Ваше звання</label>
-            <select id="Your-rank" name="Your-rank" required>
-              <option value="">Оберіть звання</option>
-              <option value="Солдат">Солдат</option>
-              <option value="Старший солдат">Старший солдат</option>
-              <option value="Молодший сержант">Молодший сержант</option>
-              <option value="Сержант">Сержант</option>
-              <option value="Старший сержант">Старший сержант</option>
-              <option value="Молодший лейтенант">Молодший лейтенант</option>
-              <option value="Лейтенант">Лейтенант</option>
-              <option value="Старший лейтенант">Старший лейтенант</option>
-              <option value="Капітан">Капітан</option>
-              <option value="Майор">Майор</option>
-              <option value="Підполковник">Підполковник</option>
-              <option value="Полковник">Полковник</option>
-              <option value="Бригадний генерал">Бригадний генерал</option>
-              <option value="Генерал-майор">Генерал-майор</option>
-              <option value="Генерал-лейтенант">Генерал-лейтенант</option>
-              <option value="Генерал">Генерал</option>
-            </select>
-          </div>
+    <div class="container">
+        <header>
+            <h1>Калькулятор військової пенсії</h1>
+            <div class="subtitle">Адвокат Дмитро Лапоша | Орієнтовний розрахунок для військовослужбовців та силових структур</div>
+            
+            <div class="contact-info">
+                <div class="phones-row">
+                    <a href="tel:0952347574" class="phone-number">095 234 75 74</a>
+                    <a href="tel:0932347574" class="phone-number">093 234 75 74</a>
+                    <a href="tel:0682347574" class="phone-number">068 234 75 74</a>
+                </div>
+                
+                <div class="qr-container">
+                    <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3A%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%BE%20%D0%9B%D0%B0%D0%BF%D0%BE%D1%88%D0%B0%0ATEL%3A0952347574%0ATEL%3A0932347574%0ATEL%3A0682347574%0AEMAIL%3Ad.laposha%40gmail.com%0AORG%3A%D0%90%D0%B4%D0%B2%D0%BE%D0%BA%D0%B0%D1%82%0ATITLE%3A%D0%90%D0%B4%D0%B2%D0%BE%D0%BA%D0%B0%D1%82%0ANOTE%3A%D0%90%D0%B4%D0%B2%D0%BE%D0%BA%D0%B0%D1%82%20%D0%B7%D0%B0%20%D0%BF%D1%80%D0%B0%D0%B2%D0%B0%D0%BC%D0%B8%20%D0%B2%D1%96%D0%B9%D1%81%D1%8C%D0%BA%D0%BE%D0%B2%D0%BE%D1%81%D0%BB%D1%83%D0%B6%D0%B1%D0%BE%D0%B2%D1%86%D1%96%D0%B2%0AEND%3AVCARD" 
+                         alt="QR код контактів адвоката Дмитра Лапоші" />
+                    <div class="qr-text">
+                        Відскануйте QR-код для збереження контактів адвоката
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="content">
+            <div class="step-indicator">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-line"></div>
+                    <div class="step-label">Структура</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-line"></div>
+                    <div class="step-label">Вислуга</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-line"></div>
+                    <div class="step-label">Тип пенсії</div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Результат</div>
+                </div>
+            </div>
+            
+            <div class="accuracy-warning">
+                <strong>⚠️ Увага:</strong> Цей калькулятор надає лише орієнтовний розрахунок на основі типових випадків. Для точного розрахунку необхідно надати додаткові документи та отримати професійну консультацію адвоката.
+            </div>
+            
+            <div id="calculator">
+                <!-- Крок 1: Структура та звання -->
+                <div class="calculator-section" id="step1-content">
+                    <div class="input-section">
+                        <h2 class="section-title">Структура та звання</h2>
+                        
+                        <div class="form-group">
+                            <label for="Your-structure">Ваша структура</label>
+                            <select id="Your-structure" name="Your-structure" required>
+                                <option value="">Оберіть структуру</option>
+                                <option value="Збройні сили України" selected>Збройні сили України</option>
+                                <option value="Державна служба надзвичайних ситуацій (МНС)">Державна служба надзвичайних ситуацій (МНС)</option>
+                                <option value="Державна прикордонна служба">Державна прикордонна служба</option>
+                                <option value="Служба безпеки України">Служба безпеки України</option>
+                                <option value="Національна поліція">Національна поліція</option>
+                                <option value="Національна гвардія">Національна гвардія</option>
+                                <option value="Державна пенітенціарна служба">Державна пенітенціарна служба</option>
+                                <option value="Державна фіскальна служба">Державна фіскальна служба</option>
+                                <option value="Державна спеціальна служба транспорту">Державна спеціальна служба транспорту</option>
+                                <option value="Служба зовнішньої розвідки України">Служба зовнішньої розвідки України</option>
+                                <option value="Державна служба охорони">Державна служба охорони</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="Your-rank">Ваше звання</label>
+                            <select id="Your-rank" name="Your-rank" required>
+                                <option value="">Оберіть звання</option>
+                                <option value="Солдат">Солдат (0.30)</option>
+                                <option value="Старший солдат">Старший солдат (0.34)</option>
+                                <option value="Молодший сержант">Молодший сержант (0.38)</option>
+                                <option value="Сержант">Сержант (0.42)</option>
+                                <option value="Старший сержант">Старший сержант (0.46)</option>
+                                <option value="Молодший лейтенант">Молодший лейтенант (0.62)</option>
+                                <option value="Лейтенант" selected>Лейтенант (0.64)</option>
+                                <option value="Старший лейтенант">Старший лейтенант (0.68)</option>
+                                <option value="Капітан">Капітан (0.72)</option>
+                                <option value="Майор">Майор (0.76)</option>
+                                <option value="Підполковник">Підполковник (0.80)</option>
+                                <option value="Полковник">Полковник (0.84)</option>
+                                <option value="Бригадний генерал">Бригадний генерал (1.00)</option>
+                                <option value="Генерал-майор">Генерал-майор (1.10)</option>
+                                <option value="Генерал-лейтенант">Генерал-лейтенант (1.20)</option>
+                                <option value="Генерал">Генерал (1.30)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="law-reference">
+                            <strong>Законодавча база:</strong> Закон України "Про пенсійне забезпечення осіб, звільнених з військової служби, та деяких інших осіб"
+                        </div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <h2 class="section-title">Поточна пенсія</h2>
+                        
+                        <div class="form-group">
+                            <label for="The-size-of-the-pension">Поточна пенсія (грн)</label>
+                            <input type="number" id="The-size-of-the-pension" name="The-size-of-the-pension" value="25950" min="0" required>
+                            <div class="note-content" style="font-size: 14px; margin-top: 8px;">
+                                Вкажіть розмір пенсії, яку ви отримуєте зараз
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tariff-category">Тарифний розряд за посадою</label>
+                            <select id="tariff-category" name="tariff-category"></select>
+                            <div class="note-content" style="font-size: 14px; margin-top: 8px;">
+                                Вкажіть ваш тарифний розряд згідно з посадою
+                            </div>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button type="button" class="btn-nav" onclick="nextStep(2)">Далі →</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Крок 2: Вислуга та додаткові параметри -->
+                <div class="calculator-section hidden" id="step2-content">
+                    <div class="input-section">
+                        <h2 class="section-title">Вислуга років</h2>
+                        
+                        <div class="form-group">
+                            <label for="pages">Років вислуги: <span class="pages-number">25</span></label>
+                            <div class="range-container">
+                                <input type="range" min="20" max="40" value="25" class="pages-slider" name="pages" id="pages">
+                            </div>
+                            <div class="note-content" style="font-size: 14px; margin-top: 8px;">
+                                Мінімальна вислуга для пенсії - 20 років
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Рік звільнення</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="Release-year" value="До жовтня 2011 року" checked>
+                                    <span>До жовтня 2011 року (макс 90%)</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="Release-year" value="Від жовтня 2011 до квітня 2014 року">
+                                    <span>Від жовтня 2011 до квітня 2014 року (макс 80%)</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="Release-year" value="Після квітня 2014 року до березня 2018 року">
+                                    <span>Після квітня 2014 року до березня 2018 року (макс 70%)</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="Release-year" value="Від березня 2018 року">
+                                    <span>Від березня 2018 року (макс 70%, мін 40%)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="law-reference">
+                            <strong>Примітка:</strong> Різні періоди звільнення мають різні коефіцієнти для розрахунку пенсії
+                        </div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <h2 class="section-title">Додаткові параметри</h2>
+                        
+                        <div class="form-group">
+                            <label>Категорія чорнобильця</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="Category-of-chernobyl" value="firstCategory">
+                                    <span>Так, 1 категорія (+25%)</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="Category-of-chernobyl" value="secondCategory">
+                                    <span>Так, 2 категорія (+20%)</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="Category-of-chernobyl" value="thirdCategory">
+                                    <span>Так, 3 категорія (+15%)</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="Category-of-chernobyl" value="no" checked>
+                                    <span>Ні</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Участь в бойових діях</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="combat" value="yes">
+                                    <span>Так (коеф. 1.2)</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="combat" value="no" checked>
+                                    <span>Ні</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="premium-info-box">
+                            <div class="premium-info-value" id="premiumValue">Премія: 0% від ПО</div>
+                            <div class="premium-info-description" id="premiumDescription"></div>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button type="button" class="btn-nav secondary" onclick="prevStep(1)">← Назад</button>
+                            <button type="button" class="btn-nav" onclick="nextStep(3)">Далі →</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Крок 3: Тип пенсії -->
+                <div class="calculator-section hidden" id="step3-content">
+                    <div class="input-section">
+                        <h2 class="section-title">Тип пенсії</h2>
+                        
+                        <div class="pension-type-section">
+                            <h4>Оберіть ваш вид пенсії:</h4>
+                            <div class="type-option active" data-type="За вислугою років">
+                                <div class="type-title">За вислугою років</div>
+                                <div class="type-description">Стандартна пенсія за вислугою</div>
+                            </div>
+                            <div class="type-option" data-type="Звільнення у зв'язку зі станом здоров'я">
+                                <div class="type-title">Звільнення через здоров'я</div>
+                                <div class="type-description">Пенсія при звільненні через стан здоров'я</div>
+                            </div>
+                            <div class="type-option" data-type="За змішаним стажем">
+                                <div class="type-title">За змішаним стажем</div>
+                                <div class="type-description">Комбінація цивільного та військового стажу</div>
+                            </div>
+                            <div class="type-option" data-type="По інвалідності">
+                                <div class="type-title">По інвалідності</div>
+                                <div class="type-description">Пенсія за групою інвалідності</div>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="typeofpension" name="typeofpension" value="За вислугою років">
+                        
+                        <!-- Додаткові поля для змішаного стажу -->
+                        <div class="additional-fields" id="mixed-experience-fields">
+                            <div class="form-group">
+                                <label for="civilyears">Цивільний стаж (років)</label>
+                                <input type="number" id="civilyears" name="civilyears" value="0" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="waryears">Військова вислуга (років)</label>
+                                <input type="number" id="waryears" name="waryears" value="25" min="0">
+                            </div>
+                        </div>
+                        
+                        <!-- Додаткові поля для інвалідності -->
+                        <div class="additional-fields" id="disability-fields">
+                            <div class="form-group">
+                                <label>Група інвалідності</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="disability-group" value="1" checked>
+                                        <span>I група (70-80%)</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="disability-group" value="2">
+                                        <span>II група (50-70%)</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="disability-group" value="3">
+                                        <span>III група (40-50%)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <h2 class="section-title">Додаткові дані для розрахунку</h2>
+                        
+                        <div class="form-group">
+                            <label>Чи є довідка про грошове забезпечення?</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="has-certificate" value="no" checked>
+                                    <span>Немає довідки</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="has-certificate" value="yes">
+                                    <span>Є довідка про г/з</span>
+                                </label>
+                            </div>
+                            <div class="note-content" style="font-size: 14px; margin-top: 8px;">
+                                Довідка про грошове забезпечення значно підвищує точність розрахунку
+                            </div>
+                        </div>
+                        
+                        <div class="additional-fields" id="certificate-fields">
+                            <div class="form-group">
+                                <label for="certificate-amount">Сума довідки про г/з (грн)</label>
+                                <input type="number" id="certificate-amount" name="certificate-amount" value="0" min="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="additional-benefits">Додаткові надбавки (грн)</label>
+                            <input type="number" id="additional-benefits" name="additional-benefits" value="0" min="0">
+                            <div class="note-content" style="font-size: 14px; margin-top: 8px;">
+                                Сума додаткових надбавок (гірські, за УБД, тощо)
+                            </div>
+                        </div>
+                        
+                        <div class="error-message" id="errorMessage"></div>
+                        
+                        <div class="nav-buttons">
+                            <button type="button" class="btn-nav secondary" onclick="prevStep(2)">← Назад</button>
+                            <button type="button" class="btn-calculate" onclick="calculatePension()">РОЗРАХУВАТИ ОРІЄНТОВНУ ПЕНСІЮ</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Результати -->
+                <div class="results-section" id="resultsSection">
+                    <h2 class="results-title">Орієнтовні результати розрахунку</h2>
+                    
+                    <div class="accuracy-warning" style="margin-bottom: 30px;">
+                        <strong>⚠️ Увага:</strong> Цей розрахунок є орієнтовним на основі наданих даних. Для точного визначення розміру пенсії необхідно надати наступні документи:
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Довідку про грошове забезпечення</li>
+                            <li>Копії наказів про призначення на посади</li>
+                            <li>Документи про вислугу років</li>
+                            <li>Документи про інвалідність (якщо є)</li>
+                            <li>Інші документи, що підтверджують право на пільги</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="results-grid" id="resultsGrid"></div>
+                    
+                    <div class="consultation-box" id="consultationRecommendation">
+                        <div class="consultation-title">Для точного розрахунку необхідна консультація адвоката</div>
+                        <div class="consultation-content">
+                            На основі досвіду роботи з сотнями клієнтів, ми знаємо, що багато військовослужбовців отримують менше, ніж мають право. 
+                            Для точного розрахунку необхідно проаналізувати ваші документи та врахувати всі пільги та надбавки.
+                        </div>
+                        <div class="consultation-links">
+                            <a href="tel:0952347574" class="consultation-link">Зателефонувати адвокату</a>
+                            <a href="mailto:d.laposha@gmail.com?subject=Консультація щодо військової пенсії" class="consultation-link secondary">Надіслати документи на аналіз</a>
+                        </div>
+                    </div>
+                    
+                    <div class="note-box">
+                        <div class="note-title">📋 Що впливає на точність розрахунку?</div>
+                        <div class="note-content">
+                            <p><strong>Фактори, які можуть збільшити вашу пенсію:</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>Бойові дії та участь в АТО/ООС/ЗСУ</li>
+                                <li>Гірські та північні надбавки</li>
+                                <li>Надбавки за службу в особливих умовах</li>
+                                <li>Надбавки на неповнолітніх дітей</li>
+                                <li>Перерахунок через індексацію</li>
+                                <li>Коректний розрахунок вислуги років</li>
+                                <li>Врахування всіх пільг та компенсацій</li>
+                            </ul>
+                            <p style="margin-top: 15px;"><strong>Калькулятор надає лише орієнтовні результати на основі типових випадків. Точний розрахунок можливий лише після аналізу всіх документів адвокатом.</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-nav secondary" onclick="restartCalculator()">← Розрахувати знову</button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="grid-wrapper range-slider-wrapper tab">
-          <div class="form-group">
-            <label for="pages">Років вислуги</label>
-            <div class="range-container">
-              <input type="range" min="20" max="65" value="20" class="pages-slider" name="pages" oninput="document.querySelector('.pages-number').textContent = this.value">
-              <span class="pages-number">20</span>
-            </div>
-          </div>
-          <div class="form-group year-wrap">
-            <label>Рік звільнення</label>
-            <div class="radio-group">
-              <label class="radio-item"><input type="radio" name="Release-year" value="До жовтня 2011 року" checked> До жовтня 2011 року</label>
-              <label class="radio-item"><input type="radio" name="Release-year" value="Від жовтня 2011 до квітня 2014 року"> Від жовтня 2011 до квітня 2014 року</label>
-              <label class="radio-item"><input type="radio" name="Release-year" value="Після квітня 2014 року до березня 2018 року"> Після квітня 2014 року до березня 2018 року</label>
-              <label class="radio-item"><input type="radio" name="Release-year" value="Від березня 2018 року"> Від березня 2018 року</label>
-            </div>
-          </div>
-          <div class="form-group chornobylec">
-            <label>Чи є категорія чорнобильця?</label>
-            <div class="radio-group">
-              <label class="radio-item"><input type="radio" name="Category-of-chernobyl" value="firstCategoy"> Так, 1 категорія</label>
-              <label class="radio-item"><input type="radio" name="Category-of-chernobyl" value="secondCategoy"> Так, 2 категорія</label>
-              <label class="radio-item"><input type="radio" name="Category-of-chernobyl" value="no" checked> Ні</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-wrapper extra tab">
-          <div class="form-group">
-            <label for="typeofpension">Ваш вид пенсії</label>
-            <select id="typeofpension" name="Your-type-of-pension" required>
-              <option value="">Оберіть тип</option>
-              <option value="За вислугою років">За вислугою років</option>
-              <option value="Звільнення у зв’язку зі станом здоров’я">Звільнення у зв’язку зі станом здоров’я</option>
-              <option value="За змішаним стажем">За змішаним стажем</option>
-              <option value="По інвалідності">По інвалідності</option>
-              <option value="По втраті годувальника">По втраті годувальника</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="The-size-of-the-pension">Розмір пенсії (грн)</label>
-            <input type="number" id="The-size-of-the-pension" name="The-size-of-the-pension" value="23610" min="0" required>
-          </div>
-          <div class="grid-wrapper by-mixed-work-experience" style="display: none;">
-            <div class="form-group">
-              <label for="civilyears">Скільки у вас років цивільного стажу?</label>
-              <input type="number" id="civilyears" name="civilyears" value="0" min="0">
-            </div>
-            <div class="form-group">
-              <label for="waryears">Скільки у вас років військової вислуги?</label>
-              <input type="number" id="waryears" name="waryears" value="32" min="0">
-            </div>
-            <div class="form-group health">
-              <label>Ви звільнились у зв’язку зі станом здоров’я?</label>
-              <div class="radio-group">
-                <label class="radio-item"><input type="radio" name="Did-you-resign-due-to-health-issues" value="yes"> Так</label>
-                <label class="radio-item"><input type="radio" name="Did-you-resign-due-to-health-issues" value="no" checked> Ні</label>
-              </div>
-            </div>
-          </div>
-          <div class="grid-wrapper due-to-disability" style="display: none;">
-            <div class="form-group invalidnist">
-              <label>Причина інвалідності?</label>
-              <div class="radio-group">
-                <label class="radio-item"><input type="radio" name="The-reason-for-the-disability" value="war"> Війна</label>
-                <label class="radio-item"><input type="radio" name="The-reason-for-the-disability" value="army"> Армія</label>
-                <label class="radio-item"><input type="radio" name="The-reason-for-the-disability" value="none" checked> Ні</label>
-              </div>
-            </div>
-            <div class="form-group inv-group">
-              <label>Яка група інвалідності?</label>
-              <div class="radio-group">
-                <label class="radio-item"><input type="radio" name="Disability-group" value="1-3"> I чи II (по війні)</label>
-                <label class="radio-item"><input type="radio" name="Disability-group" value="2-3"> II чи III (звичайна)</label>
-                <label class="radio-item"><input type="radio" name="Disability-group" value="3"> III (звичайна)</label>
-                <label class="radio-item"><input type="radio" name="Disability-group" value="none" checked> Немає</label>
-              </div>
-            </div>
-          </div>
-          <div class="grid-wrapper upon-loss-of-breadwinner" style="display: none;">
-            <div class="form-group byloss">
-              <label>По втраті годувальника</label>
-              <div class="radio-group">
-                <label class="radio-item"><input type="radio" name="Upon-loss-of-breadwinner" value="radio-8"> Військовий загинув на службі</label>
-                <label class="radio-item"><input type="radio" name="Upon-loss-of-breadwinner" value="radio-10"> Помер після служби</label>
-                <label class="radio-item"><input type="radio" name="Upon-loss-of-breadwinner" value="none" checked> Ні</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-wrapper checkbox-wrapper dovidka-wrapper tab">
-          <div class="form-group dovidka">
-            <label>Розмір довідки про г/з</label>
-            <div class="radio-group">
-              <label class="radio-item"><input type="radio" name="dovidkaRadioGroup" value="radio-2" checked> Немає довідки</label>
-              <label class="radio-item"><input type="radio" name="dovidkaRadioGroup" value="radio-3"> Є довідка про г/з</label>
-            </div>
-          </div>
-          <div class="grid-wrapper dovidka-wrap last" style="display: none;">
-            <div class="form-group">
-              <label for="field-25">Скільки у вас сума довідки про г/з? (грн)</label>
-              <input type="number" id="field-25" name="field-25" value="0" min="0">
-            </div>
-          </div>
-          <button id="resultBtn" type="submit">Розрахувати</button>
-        </div>
-
-        <div class="div-for-button">
-          <a id="prevBtn" href="#" class="submit-button back-button" style="display: none;">Назад</a>
-          <a id="nextBtn" href="#" class="request-button full-button next-button">Далі</a>
-        </div>
-      </form>
-      <div class="result-of-pensia" style="display: none;">
-        <div class="wraper-for-result">
-          <div class="field-label result">Ваш правильний розмір пенсії: </div>
-          <div class="field-label result price">— грн</div>
-        </div>
-        <p class="note">Дана сума не враховує виплати на неповнолітніх дітей, гірські, за УБД та інших надбавок. Тому Ваша пенсія може бути ще більше.</p>
-        <p class="consultation-message" id="sufficient-pension" style="display: none;">
-          Ваша виплата пенсії, враховуючи надану інформацію, здійснюється на належному рівні для отримання консультації перейдіть для <a href="https://docs.google.com/forms/u/2/" target="_blank">заповнення форми</a> або <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=shell" target="_blank">альтернативної форми</a>.
-        </p>
-        <p class="consultation-message" id="increase-pension" style="display: none;">
-          Ваша виплата пенсії, враховуючи надану інформацію, може бути збільшена для отримання консультації перейдіть для <a href="https://docs.google.com/forms/u/2/" target="_blank">заповнення форми</a> або <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=shell" target="_blank">альтернативної форми</a>.
-        </p>
-      </div>
-      <div class="error-message" style="display: none;">
-        <div class="wrapper-for-error">
-          <div class="error-message">Ой! Під час надсилання форми сталася помилка.</div>
-        </div>
-      </div>
+        
+        <footer>
+            <p>Адвокат Дмитро Лапоша <span class="flag"></span> Захищаємо права військовослужбовців та пенсіонерів</p>
+            <p style="margin-top: 8px; font-size: 13px;">© 2026 Калькулятор військової пенсії. Орієнтовний розрахунок. Всі права захищені.</p>
+        </footer>
     </div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script>
-    $(document).ready(function() {
-      const pagesNumberElement = $('.pages-number');
-      const zvanieVal = $('#Your-rank');
-      const strVal = $('#Your-structure');
-      const pensTypeVal = $('#typeofpension');
-      const pensiaVal = $('#The-size-of-the-pension');
-      const civilyearsVal = $('#civilyears');
-      const waryearsVal = $('#waryears');
-      const dovidkaVal = $('#field-25');
-      const dovidkaWrap = $('.dovidka-wrap');
-
-      let lastNumber, zvanieValue, strValue, pensTypeValue, pensiaValue, civilyearsValue, waryearsValue, dovidkaValue, year, chernobylec, health, invalidnist, invGroup, dovidka, vtrata;
-
-      // Ініціалізація значень
-      function initValues() {
-        lastNumber = parseInt(pagesNumberElement.text()) || 20;
-        zvanieValue = zvanieVal.val() || 'Полковник';
-        strValue = strVal.val() || 'Служба безпеки України';
-        pensTypeValue = pensTypeVal.val() || 'За вислугою років';
-        pensiaValue = parseFloat(pensiaVal.val()) || 23610;
-        civilyearsValue = parseFloat(civilyearsVal.val()) || 0;
-        waryearsValue = parseFloat(waryearsVal.val()) || 32;
-        dovidkaValue = parseFloat(dovidkaVal.val()) || 0;
-        year = $('input[name="Release-year"]:checked').val() || 'До жовтня 2011 року';
-        chernobylec = $('input[name="Category-of-chernobyl"]:checked').val() === 'firstCategoy' ? 1 :
-                      $('input[name="Category-of-chernobyl"]:checked').val() === 'secondCategoy' ? 0.95 : 0;
-        health = $('input[name="Did-you-resign-due-to-health-issues"]:checked').val() || 'no';
-        dovidka = $('input[name="dovidkaRadioGroup"]:checked').val() || 'radio-2';
-        vtrata = $('input[name="Upon-loss-of-breadwinner"]:checked').val() || 'none';
-        invalidnist = $('input[name="The-reason-for-the-disability"]:checked').val() || 'none';
-        invGroup = $('input[name="Disability-group"]:checked').val() || 'none';
-      }
-
-      // Оновлення вислуги
-      const observer = new MutationObserver(() => {
-        lastNumber = parseInt(pagesNumberElement.text()) || 20;
-      });
-      observer.observe(pagesNumberElement[0], { characterData: true, subtree: true });
-
-      // Оновлення типу пенсії
-      $('#typeofpension').change(function() {
-        var selectedValue = $(this).val();
-        var gridWrapperMixedExperience = $('.grid-wrapper.by-mixed-work-experience');
-        var gridWrapperDueToDisability = $('.grid-wrapper.due-to-disability');
-        var gridWrapperUponLossofBreadwinner = $('.grid-wrapper.upon-loss-of-breadwinner');
-
-        if (selectedValue === 'За змішаним стажем') {
-          gridWrapperMixedExperience.show();
-          gridWrapperDueToDisability.hide();
-          gridWrapperUponLossofBreadwinner.hide();
-          $('#civilyears').prop('required', true);
-          $('#waryears').prop('required', true);
-          $('input[name="Did-you-resign-due-to-health-issues"]').prop('required', true);
-          $('input[name="The-reason-for-the-disability"]').prop('required', false);
-          $('input[name="Disability-group"]').prop('required', false);
-          $('input[name="Upon-loss-of-breadwinner"]').prop('required', false);
-        } else if (selectedValue === 'По інвалідності') {
-          gridWrapperMixedExperience.hide();
-          gridWrapperDueToDisability.show();
-          gridWrapperUponLossofBreadwinner.hide();
-          $('#civilyears').prop('required', false);
-          $('#waryears').prop('required', false);
-          $('input[name="Did-you-resign-due-to-health-issues"]').prop('required', false);
-          $('input[name="The-reason-for-the-disability"]').prop('required', true);
-          $('input[name="Disability-group"]').prop('required', true);
-          $('input[name="Upon-loss-of-breadwinner"]').prop('required', false);
-        } else if (selectedValue === 'По втраті годувальника') {
-          gridWrapperMixedExperience.hide();
-          gridWrapperDueToDisability.hide();
-          gridWrapperUponLossofBreadwinner.show();
-          $('#civilyears').prop('required', false);
-          $('#waryears').prop('required', false);
-          $('input[name="Did-you-resign-due-to-health-issues"]').prop('required', false);
-          $('input[name="The-reason-for-the-disability"]').prop('required', false);
-          $('input[name="Disability-group"]').prop('required', false);
-          $('input[name="Upon-loss-of-breadwinner"]').prop('required', true);
-        } else {
-          gridWrapperMixedExperience.hide();
-          gridWrapperDueToDisability.hide();
-          gridWrapperUponLossofBreadwinner.hide();
-          $('#civilyears').prop('required', false);
-          $('#waryears').prop('required', false);
-          $('input[name="Did-you-resign-due-to-health-issues"]').prop('required', false);
-          $('input[name="The-reason-for-the-disability"]').prop('required', false);
-          $('input[name="Disability-group"]').prop('required', false);
-          $('input[name="Upon-loss-of-breadwinner"]').prop('required', false);
-        }
-      });
-
-      // Обробка вибору довідки
-      $('.dovidka input[type="radio"]').on('change', function() {
-        if ($(this).prop('checked')) {
-          dovidka = $(this).attr('value');
-          if (dovidka === 'radio-3') {
-            dovidkaWrap.show();
-            $('#field-25').prop('required', true);
-          } else {
-            dovidkaWrap.hide();
-            $('#field-25').prop('required', false);
-          }
-        }
-      });
-
-      // Логіка вкладок
-      const tabs = $('.tab');
-      const nextBtn = $('#nextBtn');
-      const prevBtn = $('#prevBtn');
-      let currentTab = 0;
-
-      function showError(message) {
-        $('.error-message').text(message).show();
-      }
-
-      function clearErrors() {
-        $('.error-message').hide();
-      }
-
-      function showTab(n) {
-        clearErrors();
-        if (currentTab === 1) {
-          const releaseYearChecked = $('input[name="Release-year"]:checked').length;
-          const chernobylCategoryChecked = $('input[name="Category-of-chernobyl"]:checked').length;
-          if (!releaseYearChecked || !chernobylCategoryChecked) {
-            showError("Будь ласка, оберіть рік звільнення та категорію чорнобильця перед переходом.");
-            return;
-          }
-        } else if (currentTab === 2) {
-          const selectedTypeOfPension = $('#typeofpension').val();
-          const sizeOfPension = $('#The-size-of-the-pension').val();
-          if (sizeOfPension === "") {
-            showError("Будь ласка, заповніть розмір пенсії перед переходом далі.");
-            return;
-          }
-          if (selectedTypeOfPension === "По інвалідності") {
-            const disabilityRadioGroup = $('input[name="Disability-group"]');
-            let checked = false;
-            disabilityRadioGroup.each(function() {
-              if ($(this).prop('checked')) checked = true;
-            });
-            if (!checked) {
-              showError("Будь ласка, оберіть групу інвалідності.");
-              return;
-            }
-          } else if (selectedTypeOfPension === "За змішаним стажем") {
-            const healthRadioChecked = $('input[name="Did-you-resign-due-to-health-issues"]:checked').length;
-            const civilianYears = $('#civilyears').val();
-            const warYears = $('#waryears').val();
-            if (!healthRadioChecked) {
-              showError("Будь ласка, оберіть відповідь на питання про звільнення у зв'язку зі станом здоров'я.");
-              return;
-            }
-            if (civilianYears === "" || warYears === "") {
-              showError("Будь ласка, заповніть всі поля на цьому кроці перед переходом.");
-              return;
-            }
-          } else if (selectedTypeOfPension === "По втраті годувальника") {
-            const lossOfBreadwinnerRadioGroup = $('input[name="Upon-loss-of-breadwinner"]');
-            let checked = false;
-            lossOfBreadwinnerRadioGroup.each(function() {
-              if ($(this).prop('checked')) checked = true;
-            });
-            if (!checked) {
-              showError("Будь ласка, оберіть причину втрати годувальника.");
-              return;
-            }
-          }
-        }
-
-        tabs.eq(currentTab).hide();
-        currentTab += n;
-        if (currentTab >= tabs.length) currentTab = tabs.length - 1;
-        if (currentTab < 0) currentTab = 0;
-        tabs.eq(currentTab).show();
-
-        prevBtn.css('display', currentTab === 0 ? 'none' : 'inline');
-        nextBtn.css('display', currentTab === tabs.length - 1 ? 'none' : 'inline');
-      }
-
-      nextBtn.on('click', function(e) {
-        e.preventDefault();
-        showTab(1);
-      });
-
-      prevBtn.on('click', function(e) {
-        e.preventDefault();
-        showTab(-1);
-      });
-
-      // Функція для оновлення loan
-      const updateLoan = (str, zvanie) => {
-        const map = {
-          'Служба безпеки України': {
-            'Солдат': 9870,
-            'Старший солдат': 10000,
-            'Молодший сержант': 10500,
-            'Сержант': 11000,
-            'Старший сержант': 11500,
-            'Молодший лейтенант': 12500,
-            'Лейтенант': 13450,
-            'Старший лейтенант': 14500,
-            'Капітан': 17000,
-            'Майор': 19000,
-            'Підполковник': 22000,
-            'Полковник': 35430,
-            'Бригадний генерал': 40000,
-            'Генерал-майор': 43000,
-            'Генерал-лейтенант': 46000,
-            'Генерал': 50000
-          },
-          'Збройні сили України': {
-            'Солдат': 9870,
-            'Старший солдат': 10000,
-            'Молодший сержант': 10500,
-            'Сержант': 11000,
-            'Старший сержант': 11500,
-            'Молодший лейтенант': 12500,
-            'Лейтенант': 13450,
-            'Старший лейтенант': 14500,
-            'Капітан': 17000,
-            'Майор': 19000,
-            'Підполковник': 22000,
-            'Полковник': 20233,
-            'Бригадний генерал': 35000,
-            'Генерал-майор': 38000,
-            'Генерал-лейтенант': 41000,
-            'Генерал': 47000
-          },
-          'Національна поліція': {
-            'Солдат': 9870,
-            'Старший солдат': 10000,
-            'Молодший сержант': 10500,
-            'Сержант': 11000,
-            'Старший сержант': 11500,
-            'Молодший лейтенант': 12500,
-            'Лейтенант': 13450,
-            'Старший лейтенант': 14500,
-            'Капітан': 17000,
-            'Майор': 19000,
-            'Підполковник': 22000,
-            'Полковник': 35430,
-            'Бригадний генерал': 40000,
-            'Генерал-майор': 43000,
-            'Генерал-лейтенант': 46000,
-            'Генерал': 50000
-          },
-          'Державна служба надзвичайних ситуацій (МНС)': {
-            'Солдат': 9500,
-            'Старший солдат': 9800,
-            'Молодший сержант': 10200,
-            'Сержант': 10700,
-            'Старший сержант': 11200,
-            'Молодший лейтенант': 12200,
-            'Лейтенант': 13000,
-            'Старший лейтенант': 14000,
-            'Капітан': 16500,
-            'Майор': 18500,
-            'Підполковник': 21000,
-            'Полковник': 20136,
-            'Бригадний генерал': 34000,
-            'Генерал-майор': 37000,
-            'Генерал-лейтенант': 40000,
-            'Генерал': 46000
-          },
-          'Державна прикордонна служба': {
-            'Солдат': 10000,
-            'Старший солдат': 10300,
-            'Молодший сержант': 10800,
-            'Сержант': 11300,
-            'Старший сержант': 11800,
-            'Молодший лейтенант': 12800,
-            'Лейтенант': 13750,
-            'Старший лейтенант': 14800,
-            'Капітан': 17300,
-            'Майор': 19300,
-            'Підполковник': 22300,
-            'Полковник': 35930,
-            'Бригадний генерал': 41000,
-            'Генерал-майор': 44000,
-            'Генерал-лейтенант': 47000,
-            'Генерал': 51000
-          },
-          'Міліція': {
-            'Солдат': 9500,
-            'Старший солдат': 9800,
-            'Молодший сержант': 10200,
-            'Сержант': 10700,
-            'Старший сержант': 11200,
-            'Молодший лейтенант': 12200,
-            'Лейтенант': 13000,
-            'Старший лейтенант': 14000,
-            'Капітан': 16500,
-            'Майор': 18500,
-            'Підполковник': 21000,
-            'Полковник': 27951,
-            'Бригадний генерал': 34000,
-            'Генерал-майор': 37000,
-            'Генерал-лейтенант': 40000,
-            'Генерал': 46000
-          },
-          'Державна пенітенціарна служба': {
-            'Солдат': 9000,
-            'Старший солдат': 9300,
-            'Молодший сержант': 9700,
-            'Сержант': 10200,
-            'Старший сержант': 10700,
-            'Молодший лейтенант': 11700,
-            'Лейтенант': 12500,
-            'Старший лейтенант': 13500,
-            'Капітан': 16000,
-            'Майор': 18000,
-            'Підполковник': 20000,
-            'Полковник': 20000,
-            'Бригадний генерал': 33000,
-            'Генерал-майор': 36000,
-            'Генерал-лейтенант': 39000,
-            'Генерал': 45000
-          },
-          'Національна гвардія': {
-            'Солдат': 9870,
-            'Старший солдат': 10000,
-            'Молодший сержант': 10500,
-            'Сержант': 11000,
-            'Старший сержант': 11500,
-            'Молодший лейтенант': 12500,
-            'Лейтенант': 13450,
-            'Старший лейтенант': 14500,
-            'Капітан': 17000,
-            'Майор': 19000,
-            'Підполковник': 22000,
-            'Полковник': 27951,
-            'Бригадний генерал': 40000,
-            'Генерал-майор': 43000,
-            'Генерал-лейтенант': 46000,
-            'Генерал': 50000
-          },
-          'Державна фіскальна служба': {
-            'Солдат': 9500,
-            'Старший солдат': 9800,
-            'Молодший сержант': 10200,
-            'Сержант': 10700,
-            'Старший сержант': 11200,
-            'Молодший лейтенант': 12200,
-            'Лейтенант': 13000,
-            'Старший лейтенант': 14000,
-            'Капітан': 16500,
-            'Майор': 18500,
-            'Підполковник': 21000,
-            'Полковник': 25000,
-            'Бригадний генерал': 34000,
-            'Генерал-майор': 37000,
-            'Генерал-лейтенант': 40000,
-            'Генерал': 46000
-          },
-          'Державна спеціальна служба транспорту': {
-            'Солдат': 9500,
-            'Старший солдат': 9800,
-            'Молодший сержант': 10200,
-            'Сержант': 10700,
-            'Старший сержант': 11200,
-            'Молодший лейтенант': 12200,
-            'Лейтенант': 13000,
-            'Старший лейтенант': 14000,
-            'Капітан': 16500,
-            'Майор': 18500,
-            'Підполковник': 21000,
-            'Полковник': 25000,
-            'Бригадний генерал': 34000,
-            'Генерал-майор': 37000,
-            'Генерал-лейтенант': 40000,
-            'Генерал': 46000
-          },
-          'Служба зовнішньої розвідки України': {
-            'Солдат': 9870,
-            'Старший солдат': 10000,
-            'Молодший сержант': 10500,
-            'Сержант': 11000,
-            'Старший сержант': 11500,
-            'Молодший лейтенант': 12500,
-            'Лейтенант': 13450,
-            'Старший лейтенант': 14500,
-            'Капітан': 17000,
-            'Майор': 19000,
-            'Підполковник': 22000,
-            'Полковник': 35430,
-            'Бригадний генерал': 40000,
-            'Генерал-майор': 43000,
-            'Генерал-лейтенант': 46000,
-            'Генерал': 50000
-          },
-          'Космічне агентство': {
-            'Солдат': 9500,
-            'Старший солдат': 9800,
-            'Молодший сержант': 10200,
-            'Сержант': 10700,
-            'Старший сержант': 11200,
-            'Молодший лейтенант': 12200,
-            'Лейтенант': 13000,
-            'Старший лейтенант': 14000,
-            'Капітан': 16500,
-            'Майор': 18500,
-            'Підполковник': 21000,
-            'Полковник': 25000,
-            'Бригадний генерал': 34000,
-            'Генерал-майор': 37000,
-            'Генерал-лейтенант': 40000,
-            'Генерал': 46000
-          },
-          'Державна служба охорони': {
-            'Солдат': 9500,
-            'Старший солдат': 9800,
-            'Молодший сержант': 10200,
-            'Сержант': 10700,
-            'Старший сержант': 11200,
-            'Молодший лейтенант': 12200,
-            'Лейтенант': 13000,
-            'Старший лейтенант': 14000,
-            'Капітан': 16500,
-            'Майор': 18500,
-            'Підполковник': 21000,
-            'Полковник': 25000,
-            'Бригадний генерал': 34000,
-            'Генерал-майор': 37000,
-            'Генерал-лейтенант': 40000,
-            'Генерал': 46000
-          }
+    
+    <script>
+        // Глобальні змінні
+        let currentStep = 1;
+        let selectedPensionType = 'За вислугою років';
+        
+        // Константи з коду калькулятора грошового забезпечення
+        const pmpData = {
+            2020: 2102, 2021: 2270, 2022: 2481,
+            2023: 2684, 2024: 3028, 2025: 3028, 2026: 3328
         };
-        return map[str] && map[str][zvanie] ? map[str][zvanie] : 0;
-      };
-
-      // Розрахунок пенсії
-      $('#resultBtn').on('click', function(e) {
-        e.preventDefault();
-        initValues();
-
-        const releaseYearChecked = $('input[name="Release-year"]:checked').length;
-        const chernobylCategoryChecked = $('input[name="Category-of-chernobyl"]:checked').length;
-        const sizeOfPension = $('#The-size-of-the-pension').val();
-
-        if (!releaseYearChecked || !chernobylCategoryChecked || sizeOfPension === "") {
-          showError("Будь ласка, заповніть усі обов’язкові поля.");
-          return;
+        
+        const tariffCoefficients = {
+            1: 1.4, 2: 1.45, 3: 1.5, 4: 1.55, 5: 1.6, 6: 1.65, 7: 1.7, 8: 1.75, 9: 1.8, 10: 1.85,
+            11: 1.9, 12: 1.95, 13: 2, 14: 2.08, 15: 2.16, 16: 2.24, 17: 2.32, 18: 2.4, 19: 2.48, 20: 2.56,
+            21: 2.64, 22: 2.72, 23: 2.8, 24: 2.88, 25: 2.96, 26: 3.04, 27: 3.12, 28: 3.2, 29: 3.28, 30: 3.36,
+            31: 3.44, 32: 3.52, 33: 3.6, 34: 3.68, 35: 3.76, 36: 3.84, 37: 3.92, 38: 4, 39: 4.08, 40: 4.16,
+            41: 4.24, 42: 4.32, 43: 4.4, 44: 4.48, 45: 4.56, 46: 4.64, 47: 4.72, 48: 4.8, 49: 4.88, 50: 4.96,
+            51: 5.04, 52: 5.12, 53: 5.2, 54: 5.28, 55: 5.36, 56: 5.44, 57: 5.52, 58: 5.6, 59: 5.68, 60: 5.76
+        };
+        
+        const premiums2020_2022 = {
+            less1year: { range1_29: 2.18, range30_60: 0.35 },
+            more1year: { range1_29: 1.98, range30_60: 0.35 }
+        };
+        
+        const premiums2023 = {
+            1: {min: 2.1, max: 6.33}, 2: {min: 2.1, max: 6.03}, 3: {min: 2.1, max: 5.78},
+            4: {min: 2.1, max: 5.56}, 5: {min: 2.1, max: 5.34}, 6: {min: 2.1, max: 5.13},
+            7: {min: 2.1, max: 5.05}, 8: {min: 2.1, max: 4.92}, 9: {min: 2.1, max: 4.89},
+            10: {min: 2.1, max: 4.86}, 11: {min: 2.1, max: 4.83}, 12: {min: 2.1, max: 4.80},
+            13: {min: 2.1, max: 4.67}, 14: {min: 2.1, max: 4.55}, 15: {min: 2.1, max: 4.43},
+            16: {min: 2.1, max: 4.29}, 17: {min: 2.1, max: 4.20}, 18: {min: 2.1, max: 4.12},
+            19: {min: 2.1, max: 4.05}, 20: {min: 2.1, max: 3.95}
+        };
+        
+        const defaultPremium2023 = {min: 2.1, max: 3.90};
+        
+        const RANK_COEFFICIENTS = {
+            'Солдат': 0.30,
+            'Старший солдат': 0.34,
+            'Молодший сержант': 0.38,
+            'Сержант': 0.42,
+            'Старший сержант': 0.46,
+            'Молодший лейтенант': 0.62,
+            'Лейтенант': 0.64,
+            'Старший лейтенант': 0.68,
+            'Капітан': 0.72,
+            'Майор': 0.76,
+            'Підполковник': 0.80,
+            'Полковник': 0.84,
+            'Бригадний генерал': 1.00,
+            'Генерал-майор': 1.10,
+            'Генерал-лейтенант': 1.20,
+            'Генерал': 1.30
+        };
+        
+        // Відсотки пенсій за вислугою років
+        const PENSION_PERCENTAGES = {
+            'До жовтня 2011 року': {
+                min: 0.5,
+                max: 0.9,
+                step: 0.03
+            },
+            'Від жовтня 2011 до квітня 2014 року': {
+                min: 0.5,
+                max: 0.8,
+                step: 0.03
+            },
+            'Після квітня 2014 року до березня 2018 року': {
+                min: 0.5,
+                max: 0.7,
+                step: 0.03
+            },
+            'Від березня 2018 року': {
+                min: 0.4,
+                max: 0.7,
+                step: 0.03
+            }
+        };
+        
+        // Коефіцієнти для інвалідності
+        const DISABILITY_COEFFICIENTS = {
+            '1': 0.7,
+            '2': 0.5,
+            '3': 0.4
+        };
+        
+        // Допоміжні функції
+        function getExperiencePercentage(years) {
+            if (years >= 25) return 0.50;
+            if (years >= 20) return 0.45;
+            if (years >= 15) return 0.40;
+            if (years >= 10) return 0.35;
+            if (years >= 5) return 0.30;
+            if (years >= 1) return 0.25;
+            return 0;
         }
-
-        if (pensTypeValue === "По інвалідності") {
-          const disabilityRadioGroup = $('input[name="Disability-group"]');
-          let checked = false;
-          disabilityRadioGroup.each(function() {
-            if ($(this).prop('checked')) checked = true;
-          });
-          if (!checked) {
-            showError("Будь ласка, оберіть групу інвалідності.");
-            return;
-          }
-        } else if (pensTypeValue === "За змішаним стажем") {
-          const healthRadioChecked = $('input[name="Did-you-resign-due-to-health-issues"]:checked').length;
-          const civilianYears = $('#civilyears').val();
-          const warYears = $('#waryears').val();
-          if (!healthRadioChecked || civilianYears === "" || warYears === "") {
-            showError("Будь ласка, заповніть усі поля для змішаного стажу.");
-            return;
-          }
-        } else if (pensTypeValue === "По втраті годувальника") {
-          const lossOfBreadwinnerRadioGroup = $('input[name="Upon-loss-of-breadwinner"]');
-          let checked = false;
-          lossOfBreadwinnerRadioGroup.each(function() {
-            if ($(this).prop('checked')) checked = true;
-          });
-          if (!checked) {
-            showError("Будь ласка, оберіть причину втрати годувальника.");
-            return;
-          }
+        
+        function roundTo10(num) {
+            return Math.round(num / 10) * 10;
         }
-
-        let percent = 0;
-        let result = 0;
-
-        if (pensTypeValue === 'За вислугою років') {
-          percent = lastNumber >= 20 ? 0.5 + (lastNumber - 20) * 0.03 : 0;
-          if (year === 'До жовтня 2011 року') percent = Math.min(percent, 0.9);
-          else percent = Math.min(percent, 0.7);
-          result = updateLoan(strValue, zvanieValue) * percent;
-        } else if (pensTypeValue === 'Звільнення у зв’язку зі станом здоров’я') {
-          percent = lastNumber >= 20 ? 0.5 + (lastNumber - 20) * 0.03 : 0;
-          percent = Math.min(percent, 0.7);
-          result = updateLoan(strValue, zvanieValue) * percent;
-          if (health === 'yes') result *= 1.25;
-        } else if (pensTypeValue === 'За змішаним стажем') {
-          const totalYears = parseFloat(civilyearsValue) + parseFloat(waryearsValue);
-          percent = totalYears >= 25 ? 0.5 + (totalYears - 25) * 0.01 : 0;
-          percent = Math.min(percent, 0.7);
-          result = updateLoan(strValue, zvanieValue) * percent;
-          if (health === 'yes') result *= 1.25;
-        } else if (pensTypeValue === 'По інвалідності') {
-          if (invGroup === '1-3') {
-            percent = invalidnist === 'war' ? 0.7 : 0.6;
-          } else if (invGroup === '2-3') {
-            percent = invalidnist === 'war' ? 0.6 : 0.55;
-          } else if (invGroup === '3') {
-            percent = 0.4;
-          }
-          result = updateLoan(strValue, zvanieValue) * percent;
-        } else if (pensTypeValue === 'По втраті годувальника') {
-          percent = vtrata === 'radio-8' ? 0.7 : 0.4;
-          result = updateLoan(strValue, zvanieValue) * percent;
+        
+        function formatNumber(num, decimals = 0) {
+            return new Intl.NumberFormat('uk-UA', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            }).format(num);
         }
-
-        if (dovidka === 'radio-3' && dovidkaValue > 0) {
-          result = dovidkaValue * percent;
+        
+        function getPremiumCoefficient(year, tariffCategory, experience) {
+            if (year >= 2020 && year <= 2022) {
+                const isLess1Year = experience < 1;
+                const premiumSet = isLess1Year ? premiums2020_2022.less1year : premiums2020_2022.more1year;
+                return tariffCategory <= 29 ? premiumSet.range1_29 : premiumSet.range30_60;
+            } else {
+                const premiumData = premiums2023[tariffCategory] || defaultPremium2023;
+                return experience < 1 ? premiumData.min : premiumData.max;
+            }
         }
-
-        if (chernobylec > 0) {
-          result *= chernobylec;
+        
+        function updatePremiumDisplay() {
+            const year = 2026; // Фіксований рік для пенсійного розрахунку
+            const tariff = parseInt(document.getElementById('tariff-category').value) || 12;
+            const exp = parseInt(document.getElementById('pages').value) || 25;
+            const coef = getPremiumCoefficient(year, tariff, exp);
+            
+            document.getElementById('premiumValue').textContent = `Премія: ${(coef * 100).toFixed(0)}% від ПО`;
+            document.getElementById('premiumDescription').textContent = `Розрахунок на основі стажу ${exp} років та тарифного розряду ${tariff}`;
+            
+            return coef;
         }
-
-        if (year === 'Від березня 2018 року') {
-          const minPension = 0.4 * updateLoan(strValue, zvanieValue);
-          result = Math.max(result, minPension);
+        
+        // Ініціалізація при завантаженні
+        document.addEventListener('DOMContentLoaded', function() {
+            // Оновлення числа вислуги
+            const pagesSlider = document.getElementById('pages');
+            const pagesNumber = document.querySelector('.pages-number');
+            
+            pagesSlider.addEventListener('input', function() {
+                pagesNumber.textContent = this.value;
+            });
+            
+            // Обробник вибору типу пенсії
+            document.querySelectorAll('.type-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Видалити активний клас з усіх опцій
+                    document.querySelectorAll('.type-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    
+                    // Додати активний клас до вибраної опції
+                    this.classList.add('active');
+                    
+                    // Оновити приховане поле
+                    selectedPensionType = this.getAttribute('data-type');
+                    document.getElementById('typeofpension').value = selectedPensionType;
+                    
+                    // Приховати всі додаткові поля
+                    document.querySelectorAll('.additional-fields').forEach(field => {
+                        field.classList.remove('active');
+                    });
+                    
+                    // Показати відповідні додаткові поля
+                    if (selectedPensionType === 'За змішаним стажем') {
+                        document.getElementById('mixed-experience-fields').classList.add('active');
+                    } else if (selectedPensionType === 'По інвалідності') {
+                        document.getElementById('disability-fields').classList.add('active');
+                    }
+                });
+            });
+            
+            // Обробник вибору наявності довідки
+            document.querySelectorAll('input[name="has-certificate"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'yes') {
+                        document.getElementById('certificate-fields').classList.add('active');
+                    } else {
+                        document.getElementById('certificate-fields').classList.remove('active');
+                    }
+                });
+            });
+            
+            // Заповнення тарифних розрядів
+            const tariffSelect = document.getElementById('tariff-category');
+            let html = '';
+            for (let i = 1; i <= 60; i++) {
+                html += `<option value="${i}" ${i === 12 ? 'selected' : ''}>${i} розряд (коефіцієнт: ${tariffCoefficients[i]})</option>`;
+            }
+            tariffSelect.innerHTML = html;
+            
+            // Оновлення премії
+            updatePremiumDisplay();
+            
+            // Ініціалізація першого кроку
+            updateStepIndicator();
+        });
+        
+        // Функції навігації
+        function nextStep(step) {
+            if (validateCurrentStep()) {
+                currentStep = step;
+                updateStepDisplay();
+                updateStepIndicator();
+            }
         }
-
-        result = Math.round(result);
-        $('.result-of-pensia').show();
-        $('.result.price').text(result + ' грн');
-
-        // Порівняння розрахованої пенсії з введеною
-        if (result <= pensiaValue) {
-          $('#sufficient-pension').show();
-          $('#increase-pension').hide();
-        } else {
-          $('#sufficient-pension').show();
-          $('#increase-pension').show();
+        
+        function prevStep(step) {
+            currentStep = step;
+            updateStepDisplay();
+            updateStepIndicator();
         }
-      });
-    });
-  </script>
+        
+        function updateStepDisplay() {
+            // Приховати всі кроки
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`step${i}-content`).classList.add('hidden');
+            }
+            document.getElementById('resultsSection').classList.remove('active');
+            
+            // Показати поточний крок
+            if (currentStep <= 3) {
+                document.getElementById(`step${currentStep}-content`).classList.remove('hidden');
+            }
+        }
+        
+        function updateStepIndicator() {
+            // Оновити індикатор кроків
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+        
+        // Валідація
+        function validateCurrentStep() {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.classList.remove('show');
+            errorMessage.textContent = '';
+            
+            if (currentStep === 1) {
+                const structure = document.getElementById('Your-structure').value;
+                const rank = document.getElementById('Your-rank').value;
+                const currentPension = document.getElementById('The-size-of-the-pension').value;
+                
+                if (!structure) {
+                    showError("Будь ласка, оберіть вашу структуру.");
+                    return false;
+                }
+                if (!rank) {
+                    showError("Будь ласка, оберіть ваше звання.");
+                    return false;
+                }
+                if (!currentPension || currentPension <= 0) {
+                    showError("Будь ласка, введіть коректний розмір поточної пенсії.");
+                    return false;
+                }
+            } else if (currentStep === 3) {
+                // Перевірка додаткових полів залежно від типу пенсії
+                if (selectedPensionType === 'За змішаним стажем') {
+                    const civilianYears = document.getElementById('civilyears').value;
+                    const warYears = document.getElementById('waryears').value;
+                    
+                    if (!civilianYears || !warYears) {
+                        showError("Будь ласка, заповніть поля цивільного та військового стажу.");
+                        return false;
+                    }
+                }
+                
+                // Перевірка довідки про г/з
+                const hasCertificate = document.querySelector('input[name="has-certificate"]:checked').value;
+                if (hasCertificate === 'yes') {
+                    const certificateAmount = document.getElementById('certificate-amount').value;
+                    if (!certificateAmount || certificateAmount <= 0) {
+                        showError("Будь ласка, введіть суму довідки про грошове забезпечення.");
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            setTimeout(() => {
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+        
+        // Розрахунок пенсії
+        function calculatePension() {
+            if (!validateCurrentStep()) return;
+            
+            // Збір даних
+            const data = {
+                structure: document.getElementById('Your-structure').value,
+                rank: document.getElementById('Your-rank').value,
+                years: parseInt(document.getElementById('pages').value),
+                releaseYear: document.querySelector('input[name="Release-year"]:checked').value,
+                chernobyl: document.querySelector('input[name="Category-of-chernobyl"]:checked').value,
+                pensionType: selectedPensionType,
+                currentPension: parseFloat(document.getElementById('The-size-of-the-pension').value),
+                civilianYears: document.getElementById('civilyears') ? parseInt(document.getElementById('civilyears').value) || 0 : 0,
+                warYears: document.getElementById('waryears') ? parseInt(document.getElementById('waryears').value) || 0 : 0,
+                disabilityGroup: document.querySelector('input[name="disability-group"]:checked')?.value,
+                hasCertificate: document.querySelector('input[name="has-certificate"]:checked').value,
+                certificateAmount: document.getElementById('certificate-amount') ? parseFloat(document.getElementById('certificate-amount').value) || 0 : 0,
+                tariffCategory: parseInt(document.getElementById('tariff-category').value) || 12,
+                additionalBenefits: parseFloat(document.getElementById('additional-benefits').value) || 0,
+                combat: document.querySelector('input[name="combat"]:checked')?.value
+            };
+            
+            // Розрахунок базової ставки на основі грошового забезпечення
+            const calculatedBase = calculateBaseAllowance(data);
+            
+            // Розрахунок відсотка пенсії
+            let pensionPercentage = calculatePensionPercentage(data);
+            
+            // Застосування коефіцієнтів
+            if (data.chernobyl === 'firstCategory') pensionPercentage *= 1.25;
+            else if (data.chernobyl === 'secondCategory') pensionPercentage *= 1.20;
+            else if (data.chernobyl === 'thirdCategory') pensionPercentage *= 1.15;
+            
+            if (data.combat === 'yes') pensionPercentage *= 1.2;
+            
+            // Розрахунок орієнтовної пенсії
+            let estimatedPension = calculatedBase * pensionPercentage;
+            
+            // Додавання додаткових надбавок
+            estimatedPension += data.additionalBenefits;
+            
+            // Якщо є довідка про г/з, розраховуємо від неї
+            if (data.hasCertificate === 'yes' && data.certificateAmount > 0) {
+                estimatedPension = data.certificateAmount * pensionPercentage + data.additionalBenefits;
+            }
+            
+            // Забезпечення мінімальної пенсії для тих, хто звільнився після 2018
+            if (data.releaseYear === 'Від березня 2018 року') {
+                const minPension = calculatedBase * 0.4;
+                estimatedPension = Math.max(estimatedPension, minPension);
+            }
+            
+            // Округлення
+            estimatedPension = Math.round(estimatedPension);
+            
+            // Додаємо варіацію для реалістичності (±15% через невідомі фактори)
+            const variation = 0.15;
+            const minEstimate = Math.round(estimatedPension * (1 - variation));
+            const maxEstimate = Math.round(estimatedPension * (1 + variation));
+            
+            // Переконуємось, що розрахункова база не менша за поточну пенсію
+            let adjustedCalculatedBase = Math.max(calculatedBase, data.currentPension / pensionPercentage);
+            
+            // Відображення результатів
+            displayResults(data, adjustedCalculatedBase, pensionPercentage, minEstimate, maxEstimate);
+            
+            // Показати секцію результатів
+            currentStep = 4;
+            updateStepDisplay();
+            updateStepIndicator();
+            document.getElementById('resultsSection').classList.add('active');
+            
+            setTimeout(() => {
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+        
+        function calculateBaseAllowance(data) {
+            // Розрахунок на основі калькулятора грошового забезпечення
+            const year = 2026;
+            const pmp = pmpData[year] || 3328;
+            const tariffCat = data.tariffCategory || 12;
+            const tariffCoef = tariffCoefficients[tariffCat] || 1.95;
+            const rankCoef = getRankCoefficient(data.rank);
+            const exp = data.years || 25;
+            
+            // Основний розрахунок
+            const po = roundTo10(pmp * tariffCoef);
+            const ovz = roundTo10(pmp * rankCoef);
+            const expPerc = getExperiencePercentage(exp);
+            const nvr = (po + ovz) * expPerc;
+            const premiumCoef = getPremiumCoefficient(year, tariffCat, exp);
+            const premium = po * premiumCoef;
+            
+            // Базове забезпечення (ПО + ОВЗ + НВР + премія)
+            const baseTotal = po + ovz + nvr + premium;
+            
+            return Math.round(baseTotal * getStructureMultiplier(data.structure));
+        }
+        
+        function getRankCoefficient(rank) {
+            return RANK_COEFFICIENTS[rank] || 0.64;
+        }
+        
+        function getStructureMultiplier(structure) {
+            // Мультиплікатори для різних структур
+            const multipliers = {
+                'Збройні сили України': 1.0,
+                'Державна служба надзвичайних ситуацій (МНС)': 0.96,
+                'Державна прикордонна служба': 1.05,
+                'Служба безпеки України': 1.02,
+                'Національна поліція': 1.02,
+                'Національна гвардія': 1.02,
+                'Державна пенітенціарна служба': 0.95,
+                'Державна фіскальна служба': 0.98,
+                'Державна спеціальна служба транспорту': 0.98,
+                'Служба зовнішньої розвідки України': 1.03,
+                'Державна служба охорони': 0.97
+            };
+            
+            return multipliers[structure] || 1.0;
+        }
+        
+        function calculatePensionPercentage(data) {
+            let percentage = 0;
+            
+            switch(data.pensionType) {
+                case 'За вислугою років':
+                case 'Звільнення у зв\'язку зі станом здоров\'я':
+                    const yearsConfig = PENSION_PERCENTAGES[data.releaseYear];
+                    if (data.years < 20) {
+                        percentage = 0;
+                    } else {
+                        percentage = yearsConfig.min + (data.years - 20) * yearsConfig.step;
+                        percentage = Math.min(percentage, yearsConfig.max);
+                    }
+                    break;
+                    
+                case 'За змішаним стажем':
+                    const totalYears = data.civilianYears + data.warYears;
+                    if (totalYears < 25) {
+                        percentage = 0;
+                    } else {
+                        percentage = 0.5 + (totalYears - 25) * 0.01;
+                        percentage = Math.min(percentage, 0.7);
+                    }
+                    break;
+                    
+                case 'По інвалідності':
+                    percentage = DISABILITY_COEFFICIENTS[data.disabilityGroup] || 0;
+                    break;
+                    
+                default:
+                    percentage = 0.5; // За замовчуванням 50%
+            }
+            
+            return percentage;
+        }
+        
+        function displayResults(data, baseRate, percentage, minEstimate, maxEstimate) {
+            const resultsGrid = document.getElementById('resultsGrid');
+            const formattedCurrent = formatNumber(data.currentPension);
+            const formattedBase = formatNumber(baseRate);
+            const formattedMin = formatNumber(minEstimate);
+            const formattedMax = formatNumber(maxEstimate);
+            const avgEstimate = Math.round((minEstimate + maxEstimate) / 2);
+            const formattedAvg = formatNumber(avgEstimate);
+            
+            // Розраховуємо потенційну різницю
+            const difference = avgEstimate - data.currentPension;
+            const formattedDifference = formatNumber(Math.abs(difference));
+            
+            let resultsHTML = `
+                <div class="result-card">
+                    <div class="result-label">Ваша поточна пенсія</div>
+                    <div class="result-value">${formattedCurrent} грн</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-label">Орієнтовна розрахункова база ГЗ</div>
+                    <div class="result-value">${formattedBase} грн</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-label">Відсоток пенсії за вислугу</div>
+                    <div class="result-value">${(percentage * 100).toFixed(1)}%</div>
+                </div>
+            `;
+            
+            // Додаємо орієнтовний діапазон
+            resultsHTML += `
+                <div class="result-card total">
+                    <div class="result-label">ОРІЄНТОВНИЙ ДІАПАЗОН ПЕНСІЇ</div>
+                    <div class="result-value">${formattedMin} - ${formattedMax} грн</div>
+                    <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                        Середнє: ${formattedAvg} грн
+                    </div>
+                </div>
+            `;
+            
+            // Додаємо картку з різницею тільки якщо вона позитивна
+            if (difference > 0) {
+                resultsHTML += `
+                    <div class="result-card" style="border-top-color: #27ae60">
+                        <div class="result-label">Можлива недоплата</div>
+                        <div class="result-value" style="color: #27ae60">
+                            +${formattedDifference} грн
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Додаємо пояснення як окрему картку
+            resultsHTML += `
+                <div class="result-card" style="border-top-color: #0057b8;">
+                    <div class="result-label">Примітка</div>
+                    <div style="font-size: 14px; color: #666;">
+                        Це орієнтовний розрахунок. Для точної оцінки необхідно надати додаткові документи та отримати консультацію адвоката.
+                    </div>
+                </div>
+            `;
+            
+            resultsGrid.innerHTML = resultsHTML;
+            
+            // Оновлюємо консультаційний блок
+            const consultationBlock = document.getElementById('consultationRecommendation');
+            if (difference > 0) {
+                consultationBlock.querySelector('.consultation-content').innerHTML = `
+                    Наш розрахунок показує, що ви отримуєте менше, ніж маєте право (орієнтовна недоплата: ${formattedDifference} грн). 
+                    Для точного розрахунку необхідно проаналізувати ваші документи та врахувати всі пільги та надбавки.
+                `;
+            } else {
+                consultationBlock.querySelector('.consultation-content').innerHTML = `
+                    На основі досвіду роботи з сотнями клієнтів, ми знаємо, що багато військовослужбовців отримують менше, ніж мають право. 
+                    Для точного розрахунку необхідно проаналізувати ваші документи та врахувати всі пільги та надбавки.
+                `;
+            }
+        }
+        
+        function restartCalculator() {
+            currentStep = 1;
+            updateStepDisplay();
+            updateStepIndicator();
+            
+            // Прокрутити до початку
+            document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
